@@ -1,0 +1,32 @@
+site_name: Django doc
+extra_css:
+  - stylesheets/extra.css
+theme:
+  name: material
+  language: es
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.instant
+    - navigation.instant.progress
+    - content.code.copy
+
+nav:
+  # - Inicio:
+  #   - Home: index.md
+
+  - Comenzando:
+    - comenzando/crear-una-aplicacion.md
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.superfences
