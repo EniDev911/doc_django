@@ -1,5 +1,35 @@
 # Crea tu primera aplicación con Django
 
+Aquí vamos realizar una aplicación que está basada en un artículo de la documentación de Django; [Escribiendo su primera aplicación en Django](https://docs.djangoproject.com/en/5.0/intro/){:target='_blank'}, la diferencia es que aquí se incluyen otros temas relacionados como la configuración de un entorno de desarrollo y conceptos que serán de mucha ayuda para el entendimiento a lo largo del tutorial.
+
+
+## Puesta en marcha de en entorno de desarrollo
+
+Cuando instalamos [Python3](https://www.python.org/){:target='blank'} obtenemos un único entorno global que es compartido por todos los proyectos y todo el código de Python. Si bien podríamos instalar **Django** y otros paquetes en el entorno global. Sin embargo sólo puedes instalar una versión en particular de cada paquete.
+
+???+ note "Nota"
+
+    Las aplicaciones Python instaladas en el entorno global pueden entrar en conflicto potencialmente unas con otras (Ej. si dependen de diferentes versiones del mismo paquete).
+
+Si instalamos Django dentro del entorno por defecto/global sólo podrás apuntar a una sóla versión de Django en la computadora. Esto puede ser un problema si quieres crear en el futuro nuevos sitios (usando las útilmas versiones de Django) pero manteniendo los sitios web que dependen de versiones más antiguas.
+
+Como resultado, los desarrolladores experimentados en Python/Django normalmente configuran y ejecutan las aplicaciones Python dentro de [entornos virtuales Python](https://docs.python.org/es/3/tutorial/venv.html){:target='blank'} independientes.
+
+
+<script src="https://kit.fontawesome.com/6b8f0c7049.js" crossorigin="anonymous"></script>
+
+
+<div style="text-align:center">
+```mermaid
+graph TD
+    B("<img src='/img/python.svg'; width='25' align='center'/><br>Python 3.9")
+    B-->C("<img src='/img/python.svg'; width='25' align='center'/><br>Python 3.6")
+    B-->D("<img src='/img/python.svg'; width='25' align='center'/><br>Python 3.7")
+    B-->E("<img src='/img/python.svg'; width='25' align='center'/><br>Python 3.8")
+    style B fill:#fff,stroke:#ccc,stroke-width:3px,height:60px,width:90px
+```
+</div>
+
 ## Crear un nuevo proyecto
 
 Una vez tenemos a nuestra disposición Django, se nos habilitará un script para la gestión de proyectos.

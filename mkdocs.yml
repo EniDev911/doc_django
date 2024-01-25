@@ -1,6 +1,8 @@
 site_name: Django doc
 extra_css:
+  - stylesheets/fontawesome.css
   - stylesheets/extra.css
+
 theme:
   name: material
   language: es
@@ -19,12 +21,14 @@ nav:
   #   - Home: index.md
 
   - Comenzando:
-    - comenzando/crear-una-aplicacion.md
+    - comenzando/crear-una-aplicacion-de-encuestas.md
 markdown_extensions:
+  - attr_list
+  - md_in_html
   - pymdownx.snippets
   - pymdownx.emoji:
-      emoji_index: !!python/name:material.extensions.emoji.twemoji 
-      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg    
   - admonition
   - pymdownx.details
   - pymdownx.tabbed:
