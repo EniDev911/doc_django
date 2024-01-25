@@ -3,7 +3,7 @@
 Aquí vamos realizar una aplicación que está basada en un artículo de la documentación de Django; [Escribiendo su primera aplicación en Django](https://docs.djangoproject.com/en/5.0/intro/){:target='_blank'}, la diferencia es que aquí se incluyen otros temas relacionados como la configuración de un entorno de desarrollo y conceptos que serán de mucha ayuda para el entendimiento a lo largo del tutorial.
 
 
-## Puesta en marcha de en entorno de desarrollo
+## Puesta en marcha de un entorno de desarrollo
 
 Cuando instalamos [Python3](https://www.python.org/){:target='blank'} obtenemos un único entorno global que es compartido por todos los proyectos y todo el código de Python. Si bien podríamos instalar **Django** y otros paquetes en el entorno global. Sin embargo sólo puedes instalar una versión en particular de cada paquete.
 
@@ -22,11 +22,10 @@ Como resultado, los desarrolladores experimentados en Python/Django normalmente 
 <div style="text-align:center">
 ```mermaid
 graph TD
-    B("<img src='/img/python.svg'; width='25' align='center'/><br>Python 3.9")
-    B-->C("<img src='/img/python.svg'; width='25' align='center'/><br>Python 3.6")
-    B-->D("<img src='/img/python.svg'; width='25' align='center'/><br>Python 3.7")
-    B-->E("<img src='/img/python.svg'; width='25' align='center'/><br>Python 3.8")
-    style B fill:#fff,stroke:#ccc,stroke-width:3px,height:60px,width:90px
+    B("<img src='https://w7.pngwing.com/pngs/234/329/png-transparent-python-logo-thumbnail.png'; width='30' align='center'/><br>Python 3.9")
+    B-->C("<img src='https://w7.pngwing.com/pngs/234/329/png-transparent-python-logo-thumbnail.png'; width='30' align='center'/><br>Python 3.6")
+    B-->D("<img src='https://w7.pngwing.com/pngs/234/329/png-transparent-python-logo-thumbnail.png'; width='30' align='center'/><br>Python 3.7")
+    B-->E("<img src='https://w7.pngwing.com/pngs/234/329/png-transparent-python-logo-thumbnail.png'; width='30' align='center'/><br>Python 3.8")
 ```
 </div>
 
