@@ -22,10 +22,10 @@ Como resultado, los desarrolladores experimentados en Python/Django normalmente 
 <div style="text-align:center">
 ```mermaid
 graph TD
-    B("<img src='https://w7.pngwing.com/pngs/234/329/png-transparent-python-logo-thumbnail.png'; width='30' align='center'/><br>Python 3.9")
-    B-->C("<img src='https://w7.pngwing.com/pngs/234/329/png-transparent-python-logo-thumbnail.png'; width='30' align='center'/><br>Python 3.6")
-    B-->D("<img src='https://w7.pngwing.com/pngs/234/329/png-transparent-python-logo-thumbnail.png'; width='30' align='center'/><br>Python 3.7")
-    B-->E("<img src='https://w7.pngwing.com/pngs/234/329/png-transparent-python-logo-thumbnail.png'; width='30' align='center'/><br>Python 3.8")
+    B("<img src='https://raw.githubusercontent.com/EniDev911/assets/d08cddbcf99c8a08cf01b64868633c8b38cb162a/svg/software/python.svg'; width='28' align='center'/><br>Python 3.9")
+    B-->C("<img src='https://raw.githubusercontent.com/EniDev911/assets/d08cddbcf99c8a08cf01b64868633c8b38cb162a/svg/software/python.svg'; width='28' align='center'/><br>Python 3.6")
+    B-->D("<img src='https://raw.githubusercontent.com/EniDev911/assets/d08cddbcf99c8a08cf01b64868633c8b38cb162a/svg/software/python.svg'; width='28' align='center'/><br>Python 3.7")
+    B-->E("<img src='https://raw.githubusercontent.com/EniDev911/assets/d08cddbcf99c8a08cf01b64868633c8b38cb162a/svg/software/python.svg'; width='28' align='center'/><br>Python 3.8")
 ```
 </div>
 
