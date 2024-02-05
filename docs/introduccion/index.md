@@ -26,3 +26,7 @@ Django habilita una protección contra muchas vulnerabilidades de forma predeter
 
 Django utiliza una arquitectura de "nada compartido" basado en componentes (cada parte de la arquitectura es independiente de las demás y, por lo tanto, puede reemplazarse o cambiarse si es necesario).
 
+## ¿Cómo se ve el código Django?
+
+En un sitio web tradicional basado en datos, una aplicación web espera solicitudes HTTP del navegador web (u otro cliente). Cuando se recibe una solicitud, la aplicación
+
