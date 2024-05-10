@@ -139,3 +139,67 @@ Ahora en el archivo `misitio_django/urls.py` lo añadimos de la siguiente forma:
         path("admin/", admin.site.urls),
     ]
     ```
+
+Como vemos importamos desde `django.urls` la función `include()` que nos permite hacer referencias a otras **URLconf**.
+
+La idea de esta función `include()` es facilitar la conexión y unificar la reproducción de URL. Dado que todo de lo que tenga que ver con la **aplicación de encuestas** estarán configuradas en su propia URLconf (`encuestas/urls.py`) y si en el caso que coloquemos nuestro archivo con las URLconf en otra raíz o subdirectorio la aplicación seguirá trabajando.
+
+Ahora tenemos la vista **index** vinculada a los URLconf. Podemos comprobar su funcionamiento ejecutando el servidor, si lo a cerrado vuelva a correr el comando:
+
+```shell
+python manage.py runserver
+```
+
+Luego vistamos en nuestro navegador visitamos [http://localhost:8000/encuestas/](http://localhost:8000/encuestas/){: target='_blank' }
+
+También vemos que tenemos la función `path()` que recibe cuatro argumentos, dos de ello son requeridos **route** y **view**, y dos son opcionales **kwargs** y **name**.
+
+### path(): route
+
+**route** es una cadena que contiene un patrón de URL. Cuando Django procesa una petición comienza por el primer patrón en **urlpatters** y continua hacia abajo por la lista comparando la **URL** solicitada con cada patrón hasta que encuentra el que corresponda.
+
+Tener en cuenta que estas expresiones regulares no buscan parámetros **GET** y **POST** o el nombre de dominio. Por ejemplo si la petición es a la dirección **http://www.midominio.com/encuestas/**, la URLconf buscará **encuestas/**. En una petición a la dirección **http://www.midominio.com/encuestas/?page=2** la URLconf también buscará **encuestas/**.
+
+### path(): view
+
+Cuando Django encuentra una coincidencia de expresiones regulares llama a la función de la vista especificada con un objeto **HttpRequest** como primer argumento y cualquiera de los **valores capturados** de la ruta como argumentos de palabra clave.
+
+### path(): kwargs
+
+Los argumentos arbitrarios de palabra clave se pueden pasar en un diccionario a la vista de destino.
+
+### path(): name
+
+Dar un nombre a su URL le permite referirse a ella de forma inequívoca desde otras partes de Django sobre todo desde las plantillas. Esta potente característica le permite realizar cambios globales en los patrones de URL de nuestro proyecto modificando solo un único archivo.
+
+---
+
+## Creando modelos
+
+A continuación definiremos modelos, sobre todo para entender la estructura de base de datos.
+
+En nuestra aplicación de encuesta, crearemos dos modelos **Pregunta** y **Eleccion**. Una **Pregunta** tendrá un campo que es la fecha de publicación. Una **Eleccion** tiene dos campos, el texto de la elección y un recuento de voto. Cada **Eleccion** está asociado con una **Pregunta**.
+
+Estos conceptos están representados por clases de Python. Vamos al archivo `encuestas/models.py` y agregamos lo siguiente:
+
+=== ":octicons-file-code-16: `encuestas/models.py`"
+    ```python
+    from django.db import models
+
+
+    class Pregunta(models.Model):
+        texto_pregunta = models.CharField(max_length=200)
+        fecha_publicacion = models.DateTimeField("fecha de publicación")
+
+
+    class Eleccion(models.Model):
+        pregunta = models.ForeignKey(Pregunta, on_delete=models.CASCADE)
+        texto_eleccion = models.CharField(max_length=200)
+        votos = models.IntegerField(default=0)
+    ```
+
+Aquí, cada modelo está representado por una clase que divide en subclases a partir de `django.db.models.Model`. Cada modelo tiene una serie de variables de clase, cada una de las cuales representa un campo de la base de datos en el modelo.
+
+Cada campo está representado por una instancia de una clase **Field**, por ejemplo, **CharField** para campos de caracteres y **DateTimeField** para variables de tiempo y fecha. Esto le dice a Django qué tipo de datos cada campo contiene.
+
+El nombre de cada instancia **Field** (por ejemplo, **texto_pregunta** o **fecha_publicacion**) es el nombre del campo. Django va usar este valor en el código para usarlo como nombre de la columna en la base de datos.

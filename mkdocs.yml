@@ -3,6 +3,9 @@ extra_css:
   - stylesheets/fontawesome.css
   - stylesheets/extra.css
 
+extra_javascript:
+  - scripts/hello_word.js
+
 theme:
   name: material
   language: es
@@ -19,9 +22,10 @@ theme:
 nav:
   # - Inicio:
   #   - Home: index.md
-
   - Comenzando:
     - comenzando/crear-una-aplicacion-de-encuestas.md
+  - "Configuración": configuracion/otra-base-de-datos.md
+    #- configuracion/base-de-datos.md
 markdown_extensions:
   - attr_list
   - md_in_html
@@ -41,3 +45,8 @@ markdown_extensions:
   - pymdownx.highlight:
       use_pygments: true
   - pymdownx.superfences
+
+copyright: Copyright &copy; 2023 Marco Contreras - Enidev911
+
+extra:
+  generator: false
