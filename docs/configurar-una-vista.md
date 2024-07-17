@@ -58,7 +58,7 @@ Ahora tenemos que asociar la vista que acabamos de definir con una **dirección*
 !!! info
 	A diferencia de los objetos `HttpRequest` que Django crea automáticamente, los objetos `HttpResponse` son nuestra responsabilidad.
 
-Pasemos a crear otra vista que brinde información sobre la petición realizada:
+Sigamos y definamos otra vista que brinde información sobre la petición realizada:
 
 === ":octicons-file-code-16: `myapp/views.py`"
 	```py title="views.py"
@@ -90,6 +90,32 @@ Pasemos a crear otra vista que brinde información sobre la petición realizada:
 	└──  mysite
 	```
 
----
+Ahora tenemos que incluir esta vista en el **urlpatterns**:
 
-## 
+=== ":octicons-file-code-16: `myapp/urls.py`"
+	```python title="urls.py" hl_lines="6"
+	from django.urls import path
+	from . import views
+	
+	urlpatterns = [
+		path('', views.first_view, name='first-view'),
+		path('info/', views.info_request, name='info-request')
+	]
+	```
+=== "Explorador"
+	```plaintext hl_lines="12"
+	 .
+	├──  db.sqlite3
+	├──  manage.py
+	├──  myapp
+	│   ├──  __init__.py
+	│   ├──  admin.py
+	│   ├──  apps.py
+	│   ├──  migrations
+	│   │   └──  __init__.py
+	│   ├──  models.py
+	│   ├──  tests.py
+	│   ├──  urls.py
+	│   └──  views.py
+	└──  mysite
+	```
