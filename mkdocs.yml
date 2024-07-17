@@ -75,7 +75,14 @@ markdown_extensions:
 plugins:
   - search
   - tags
-  - glightbox
+  - glightbox:
+      shadow: true
+      caption_position: bottom
+      zoomable: true
+      effect: fade # zoom | fade | none
+      slide_effect: slide
+      draggable: true
+      auto_caption: true
   - blog:
       blog_toc: true
 copyright: Copyright &copy; 2023 Marco Contreras - Enidev911

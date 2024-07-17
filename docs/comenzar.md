@@ -133,5 +133,5 @@ Para verificar que nuestro proyecto funcione. Cambiamos al directorio del proyec
 
     El servidor de desarrollo recarga automáticamente el código Python para cada solicitud según sea necesario. Sin embargo, algunas cosas como agregar nuevos archivos no activan el reinicio, por lo que tendríamos que reiniciar el servidor.
 
-![img](assets/images/django-project-start.png){ align="right" width="300"}
+![Página por defecto de Django](assets/images/django-project-start.png){ align="right" width="300"}
 Si visitamos <http://127.0.0.1:8000/> veremos la página por defecto de nuestro sitio con django.
