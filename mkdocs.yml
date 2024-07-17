@@ -8,31 +8,57 @@ extra_javascript:
 
 theme:
   name: material
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/brightness-7
+        name: Cambiar a modo oscuro
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/brightness-4
+        name: Cambiar a modo claro
+    # accent: teal
   language: es
+  logo: assets/images/logo.png
   font:
-    code: Fira Mono
+    code: Victor Mono
   features:
     - navigation.tabs
-    - navigation.tabs.sticky
+    # - navigation.tabs.sticky
     - navigation.instant
+    - navigation.instant.prefetch
     - navigation.instant.progress
+    # - navigation.indexes
+    - navigation.top
+    - navigation.tracking
+    - toc.follow
+    - navigation.sections
+    - navigation.expand
     - content.code.copy
     - content.code.select
-
+    - content.code.annotate
 nav:
   # - Inicio:
   #   - Home: index.md
-  - Comenzando:
-    - comenzando/crear-una-aplicacion-de-encuestas.md
-  - "Configuración": configuracion/otra-base-de-datos.md
+  - Comenzar: comenzar.md
     #- configuracion/base-de-datos.md
+  - Modelos:
+    - "Uno a uno": modelos
+  - Blog: blog/index.md
 markdown_extensions:
   - attr_list
   - md_in_html
   - pymdownx.snippets
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg    
+      emoji_generator: !!python/name:materialx.emoji.to_svg
   - admonition
   - pymdownx.details
   - pymdownx.tabbed:
@@ -46,6 +72,12 @@ markdown_extensions:
       use_pygments: true
   - pymdownx.superfences
 
+plugins:
+  - search
+  - tags
+  - glightbox
+  - blog:
+      blog_toc: true
 copyright: Copyright &copy; 2023 Marco Contreras - Enidev911
 
 extra:

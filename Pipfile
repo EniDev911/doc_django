@@ -8,8 +8,9 @@ mkdocs = "*"
 mkdocs-material = "*"
 pymdown-extensions = "*"
 mkdocs-material-extensions = "*"
+mkdocs-glightbox = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.7"
+python_version = "3.10"
