@@ -27,11 +27,11 @@ python3 -m django --version
 
 ### Generar un nuevo proyecto
 
-Para crear un nuevo esqueleto de un sitio llamado "misitio" usando la herramienta [`django-admin`](https://docs.djangoproject.com/en/5.0/ref/django-admin/) como se muestra a continuación:
+Para crear un nuevo esqueleto de un sitio llamado "mysite" usando la herramienta [`django-admin`](https://docs.djangoproject.com/en/5.0/ref/django-admin/) como se muestra a continuación:
 
 ```bash title="bash"
-django-admin startproject misitio
-cd misitio
+django-admin startproject mysite
+cd mysite
 ```
 
 ### Ejecutar el servidor de desarrollo
@@ -71,5 +71,6 @@ Para verificar que nuestro proyecto funcione. Cambiamos al directorio del proyec
 
     El servidor de desarrollo recarga automáticamente el código Python para cada solicitud según sea necesario. Sin embargo, algunas cosas como agregar nuevos archivos no activan el reinicio, por lo que tendríamos que reiniciar el servidor.
 
-![Página por defecto de Django](assets/images/django-project-start.png){ align="right" width="300"}
-Si visitamos <http://127.0.0.1:8000/> veremos la página por defecto de nuestro sitio con django.
+Si visitamos <http://127.0.0.1:8080/> veremos la página por defecto de nuestro sitio con django.
+
+![Página por defecto de Django](assets/images/django-project-start.png){style="border: 1px solid #ccc"}

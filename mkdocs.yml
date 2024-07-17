@@ -53,6 +53,7 @@ nav:
       - configurar-entorno-virtual.md
       - instalar-django.md
       - crear-nueva-app.md
+      - configurar-una-vista.md
   - Blog: blog/index.md
 markdown_extensions:
   - attr_list
