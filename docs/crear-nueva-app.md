@@ -30,3 +30,31 @@ python3 manage.py startapp myapp
     ├──  urls.py
     └──  wsgi.py
 ```
+
+Luego debemos abrir el archivo `mysite/settings.py` y registrar la app generada:
+
+!!! tree inline end "Explorador"
+
+	```plaintext hl_lines="8"
+	 .
+	├──  db.sqlite3
+	├──  manage.py
+	├──  myapp
+	└──  mysite
+    	├──  __init__.py
+    	├──  asgi.py
+    	├──  settings.py
+    	├──  urls.py
+    	└──  wsgi.py
+	```
+```py title="settings.py" hl_lines="8" linenums="33"
+INSTALLED_APPS = [
+	'django.contrib.admin',
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
+	'django.contrib.sessions',
+	'django.contrib.messages',
+	'django.contrib.staticfiles',
+	'myapp'
+]
+```
