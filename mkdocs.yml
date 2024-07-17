@@ -1,7 +1,7 @@
 site_name: Django doc
 extra_css:
-  - stylesheets/fontawesome.css
-  - stylesheets/extra.css
+  - assets/stylesheets/fontawesome.css
+  - assets/stylesheets/extra.css
 
 extra_javascript:
   - scripts/hello_word.js
@@ -28,7 +28,7 @@ theme:
   language: es
   logo: assets/images/logo.png
   font:
-    code: Victor Mono
+    code: Nerd # Nerd
   features:
     - navigation.tabs
     # - navigation.tabs.sticky
@@ -36,6 +36,7 @@ theme:
     - navigation.instant.prefetch
     - navigation.instant.progress
     # - navigation.indexes
+    - navigation.prune
     - navigation.top
     - navigation.tracking
     - toc.follow
@@ -44,13 +45,14 @@ theme:
     - content.code.copy
     - content.code.select
     - content.code.annotate
+    - content.tooltips
 nav:
   # - Inicio:
-  #   - Home: index.md
-  - Comenzar: comenzar.md
-    #- configuracion/base-de-datos.md
-  - Modelos:
-    - "Uno a uno": modelos
+  # - index.md
+  - Comenzar:
+      - configurar-entorno-virtual.md
+      - instalar-django.md
+      - crear-nueva-app.md
   - Blog: blog/index.md
 markdown_extensions:
   - attr_list

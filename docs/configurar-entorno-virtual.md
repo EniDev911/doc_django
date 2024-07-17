@@ -1,7 +1,39 @@
-# Comenzar con Django
+---
+icon: material/folder
+---
 
-Django es un framework web del lado del servidor extremadamente popular, es de código abierto y escrito en [Python](//python.org){:target='blank'} y respeta el patrón de diseño conocido como **modelo-vista-controlador** (MVC)
+# Configurar entorno virtual
 
+Cuando instalamos [Python3](https://www.python.org/){:target='blank'} obtenemos un único entorno global que es compartido por todos los proyectos y todo el código de Python. Si bien podríamos instalar **Django** y otros paquetes en el entorno global. Sin embargo sólo puedes instalar una versión en particular de cada paquete.
+
+!!! warning "Cuidado"
+
+    Las aplicaciones Python instaladas en el entorno global pueden entrar en conflicto potencialmente unas con otras (Ej. si dependen de diferentes versiones del mismo paquete).
+
+Si instalamos Django dentro del entorno por defecto/global sólo podrás apuntar a una sóla versión de Django en la computadora. Esto puede ser un problema si quieres crear en el futuro nuevos sitios (usando las útilmas versiones de Django) pero manteniendo los sitios web que dependen de versiones más antiguas.
+
+Como resultado, los desarrolladores experimentados normalmente configuran y ejecutan las aplicaciones Python dentro de [entornos virtuales Python](https://docs.python.org/es/3/tutorial/venv.html){:target='blank'} independientes.
+
+
+<script src="https://kit.fontawesome.com/6b8f0c7049.js" crossorigin="anonymous"></script>
+
+
+<div style="text-align:center" class="mermaid-container">
+<div class="mermaid-title">Esquema de Entornos Virtuales de Python</div>
+```mermaid
+graph TD
+    B(<img src="https://enidev911.github.io/fullstack-python/assets/img/base.png" width='28' />Python 3.9)
+    B---T[Entornos Virtuales]
+    T-->C(<img src="https://enidev911.github.io/fullstack-python/assets/img/venv1.png" width='28' />Python 3.9)
+    T-->D(<img src="https://enidev911.github.io/fullstack-python/assets/img/venv2.png" width='28' />Python 3.9)
+    T-->E(<img src="https://enidev911.github.io/fullstack-python/assets/img/venv3.png" width='28' />Python 3.9)
+    subgraph ''
+    C-->CD[Django==2.0]
+    D-->DD[Django==2.2]
+    E-->ED[Django==3.2]
+    end
+```
+</div>
 
 ## Instalación de Software para crear entorno virtual
 
@@ -62,76 +94,3 @@ Al ejecutar el comando `rmvirtualenv` más el nombre del virtualenv, virtualenvw
 ```bash title="bash"
 rmvirtualenv nombre_entorno
 ```
-
-
-## Instalar Django 🚀
-
-#### Con pip (recomendado)
-
-=== "Instalar última versión disponible"
-
-	```plaintext title="bash"
-	pip3 install django
-	```
-
-=== "Instalar versión específica"
-
-	```plaintext title="bash"
-	pip3 install django==3.2
-	```
-
-Podemos comprobar que está instalado Django ejecutando el siguiente comando (el comando comprueba que Python puede encontrar el módulo Django):
-
-```bash title="bash"
-python3 -m django --version
-# 3.2.4
-```
-
-### Generar un nuevo proyecto
-
-Para crear un nuevo esqueleto de un sitio llamado "misitio" usando la herramienta [`django-admin`](https://docs.djangoproject.com/en/5.0/ref/django-admin/) como se muestra a continuación:
-
-```bash title="bash"
-django-admin startproject misitio
-cd misitio
-```
-
-### Ejecutar el servidor de desarrollo
-
-Para verificar que nuestro proyecto funcione. Cambiamos al directorio del proyecto generado, y dentro ejecutamos el siguiente comando:
-
-=== "Ejecutar el servidor"
-	```bash title="bash"
-	python manage.py runserver
-	```
-=== "Salida"
-	```plaintext
-	Watching for file changes with StatReloader
-	Performing system checks...
-	
-	System check identified no issues (0 silenced).
-	
-	You have 18 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, contenttypes, sessions.
-	Run 'python manage.py migrate' to apply them.
-	July 17, 2024 - 03:53:10
-	Django version 4.2.14, using settings 'mysite.settings'
-	Starting development server at http://127.0.0.1:8000/
-	Quit the server with CONTROL-C.
-	```
-
-???+ note "Nota"
-
-    De forma predeterminada, cuando lanzamos el servidor de desarrollo se utiliza el puerto 8000.
-
-    Si deseamos cambiar el puerto del servidor, lo pasamos como argumento al comando `runserver`:
-
-    ```shell
-    python manage.py runserver 8080
-    ```
-
-???+ info "Recarga automática"
-
-    El servidor de desarrollo recarga automáticamente el código Python para cada solicitud según sea necesario. Sin embargo, algunas cosas como agregar nuevos archivos no activan el reinicio, por lo que tendríamos que reiniciar el servidor.
-
-![Página por defecto de Django](assets/images/django-project-start.png){ align="right" width="300"}
-Si visitamos <http://127.0.0.1:8000/> veremos la página por defecto de nuestro sitio con django.
