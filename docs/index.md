@@ -54,4 +54,4 @@ Django es un framework web escrito en Python de alto nivel del lado del servidor
   [EntornoVirtual]: configurar-entorno-virtual.md
   [instalacion]: instalar-django.md
   [crear_aplicacion]: crear-nueva-app.md
-  [django-views]: confugurar-una-vista.md
+  [django-views]: configurar-una-vista.md
