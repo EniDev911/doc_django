@@ -12,7 +12,7 @@ def on_page_markdown(markdown, **kwargs):
     if not include.match(page.url):
         return markdown
 
-    page_url = str(config.site_url)+str(page.url)
+    page_url = config.site_url+page.url
     page_title = urllib.parse.quote(page.title+'\n')
 
     return markdown + dedent(f"""
