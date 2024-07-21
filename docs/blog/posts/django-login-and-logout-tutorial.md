@@ -2,6 +2,8 @@
 date: 2024-04-14
 ---
 
+{% raw %}
+
 # Django login y logout
 
 En este artículo, aprenderemos a configurar el [sistema completo de autenticación de usuarios](https://docs.djangoproject.com/en/5.0/topics/auth/) en Django que consta de inicio de sesión, cierre de sesión, registro, cambio de contraseña y restablecimiento de contraseña.
@@ -101,6 +103,4 @@ def register(requets):
 	"""
 ```
 
-
-
-
+{% endraw %}

@@ -44,10 +44,13 @@ theme:
     - toc.follow
     - navigation.sections
     - navigation.expand
+    - navigation.footer
     - content.code.copy
     - content.code.select
     - content.code.annotate
     - content.tooltips
+    - content.action.edit
+    - content.action.view
 nav:
   # - Inicio:
   # - index.md
@@ -78,6 +81,7 @@ markdown_extensions:
   - pymdownx.superfences
 
 plugins:
+  - macros # pip install mkdocs-macros-plugin
   - search
   - tags
   - glightbox:
@@ -90,6 +94,8 @@ plugins:
       auto_caption: true
   - blog:
       blog_toc: true
+      post_date_format: short # long | medium | short
+      post_url_format: "{slug}" # "{date}/{slug}"
 copyright: Copyright &copy; 2023 Marco Contreras - Enidev911
 
 extra:
