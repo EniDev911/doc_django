@@ -2,7 +2,8 @@ site_name: Django doc
 extra_css:
   - assets/stylesheets/fontawesome.css
   - assets/stylesheets/extra.css
-
+hooks:
+  - hooks/socialmedia.py
 extra_javascript:
   - scripts/hello_word.js
 
