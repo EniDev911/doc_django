@@ -6,6 +6,8 @@ Django distingue entre proyectos y aplicaciones. Una aplicación es un paquete d
 
 ## Crear una nueva aplicación
 
+Una vez [generado el proyecto con django-admin](/instalar-django/#generar-un-nuevo-proyecto), abrimos la terminal a la altura del archivo `manage.py` y ejecutamos el siguiente comando:
+
 ```bash title="bash"
 python3 manage.py startapp myapp
 ```
