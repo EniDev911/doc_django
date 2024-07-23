@@ -96,7 +96,7 @@ plugins:
       blog_toc: true
       post_date_format: short # long | medium | short
       post_url_format: "{slug}" # "{date}/{slug}"
-copyright: Copyright &copy; 2023 Marco Contreras - Enidev911
+copyright: Copyright &copy; 2024 Marco Contreras - Enidev911
 
 extra:
   generator: false
