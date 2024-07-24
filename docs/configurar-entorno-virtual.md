@@ -46,11 +46,11 @@ sudo pip3 install virtualenvwrapper
 A continuación se añade las siguientes líneas en el archivo de inicio del shell (éste es un archivo oculto `.bashrc` o `.zshrc` si usas [zsh](https://en.wikipedia.org/wiki/Z_shell))
 
 === ":octicons-file-code-16: `.bashrc`"
-	```bash
-	export WORKON_HOME=$HOME/.virtualenvs # (1)
+	```bash hl_lines="1 4"
+	export WORKON_HOME=$HOME/.virtualenvs # (1)!
 	export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
 	export PROJECT_HOME=$HOME/Devel
-	source /usr/local/bin/virtualenvwrapper.sh #(2)
+	source /usr/local/bin/virtualenvwrapper.sh #(2)!
 	```
 
 	1.  La variable `WORKON_HOME` determina en qué directorio se deben crear los entornos virtuales de Python.
