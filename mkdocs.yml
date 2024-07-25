@@ -100,3 +100,10 @@ copyright: Copyright &copy; 2024 Marco Contreras - Enidev911
 
 extra:
   generator: false
+  social:
+    - icon: fontawesome/brands/github
+      name: enidev911
+      link: https://github.com/enidev911
+    - icon: /material/mailbox
+      name: contacto
+      link: mailto:enidev911@gmail.com
