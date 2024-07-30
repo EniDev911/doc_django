@@ -1,5 +1,5 @@
 site_name: Django doc
-site_url: https://enidev911.github.io/doc_django/
+site_url: ""
 extra_css:
   - assets/stylesheets/fontawesome.css
   - assets/stylesheets/extra.css

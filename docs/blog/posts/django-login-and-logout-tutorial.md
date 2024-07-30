@@ -40,7 +40,7 @@ Al ejecutarse el comando se crea una estructura de carpetas predeterminada, que 
 
 Cuando generamos un proyecto predeterminado utilizando el comando `startproject` en Django tenemos habilitado solamente el sitio administrador que lo podemos ver visitando la URL `/admin/` una vez corremos el comando [`runserver`]().
 
-![Página por defecto del sitio administrativo](/assets/images/site-admin-empty.png){style="border: 1px solid #ccc"}
+![Página por defecto del sitio administrativo](../../assets/images/site-admin-empty.png){style="border: 1px solid #ccc"}
 
 De forma predeterminada, para iniciar sesión en el administrador es necesario que un usuario tenga el atributo `is_staff` en `True` pero no podrá realizar acciones si no tiene los permisos correspondientes para dichas acciones sobre las aplicaciones que se agreguen.
 
