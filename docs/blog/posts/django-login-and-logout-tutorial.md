@@ -314,4 +314,81 @@ Para realizar la autenticación, necesitamos obtener la contraseña sin procesar
 
 Si la función `authenticate()` se ejecuta correctamente (en este casom siempre devolverá un resultado positivo), se creará una instancia de usuario (es decir, el nombre de usuario y la contraseña coinciden), y ahora podemos iniciar sesión de forma segura. Para ello, llamamos a la función `login()` y pasamos la **solicitud** (`request`) y la instancia **de usuario** como parámetro. Después de eso, simplemente redirigimos al usuario a donde queramos.
 
+Si deseamos tener más control sobre el formulario `signup.html`, podemos extraer los campos en un bucle `for`:
+
+```html title="templates/registration/signup.html"
+{% extends "base.html" %}
+{% block content %}
+<h2>Registro</h2>
+<form method="post">
+	{% csrf_token %}
+	{% for field in form %}
+	<p>
+		{{ field.label_tag }}<br>
+		{{ field }}<br>
+		{% if field.help_text %}
+			<small style="color: grey">{{ field.help_text }}</small>
+		{% endif %}
+		{% for error in field.errors %}
+			<p style="color: red">{{ error }}</p>
+		{% endfor %}
+	</p>
+	{% endfor %}
+	<button type="submit">Crear</button>
+</form>
+{% endblock %}
+```
+
+### Página de registro con campos adicionales
+
+Entonces, ¿qué pasa si también quiero obtener la dirección de correo electrónico y el nombre completo del usuario al registrarse?
+
+Esta estrategia funcionará si estás usando el usuario de Django tal como está o si lo hemos ampliado usando `AbstractUser` o `AbstractBaseUser`.
+
+Ahora necesitamos un paso más, tenemos que ampliar el `UserCreationForm`:
+
+```py title="django_contrib_auth/forms.py"
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
+class SignUpForm(UserCreationForm):
+	first_name = forms.CharField(max_length=30, required=False, help_text='Opcional.')
+	last_name = forms.CharField(max_length=30, required=False, help_text='Opcional.')
+	email = forms.EmailField(max_length=254, help_text='Requerido. Debe ser una dirección de correo válida')
+
+	class Meta:
+		model = User
+		fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
+```
+
+Ahora, en la vista, simplemente cambiamos la clase de formulario para usar nuestro nuevo `SignUpForm`:
+
+```py title="django_contrib_auth/views.py" hl_lines="3 7 16"
+from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect
+from .forms import SignUpForm #(1)!
+
+def signup(request):
+	if request.method == 'POST':
+		form = SignUpForm(request.POST)
+		if form.is_valid():
+			form.save()
+			username = form.cleaned_data.get("username")
+			raw_password = form.cleaned_data.get("password1")
+			user = authenticate(username=username, password=raw_password)
+			login(request, user)
+			return redirect('index')
+	else:
+		form = SignUpForm()
+	return render(request, "registration/signup.html", {"form": form})
+```
+
+1. Importamos la clase de formulario
+
+Se verá así, si es que le agregamos algunas reglas de estilos:
+
+![Página de registro modificada](../../assets/images/signup-with-more-fields.png){style="border: 1px solid #ccc"}
+
+
 {% endraw %}
