@@ -5,6 +5,12 @@
 	--md-admonition-icon--tree-bg: rgb(43, 55, 70);
 	--md-admonition-icon--tree-border-color: #f5f5f5;
 }
+/*  HEADING */
+
+h1 {
+	font-weight: 900 !important;
+  }
+
 .grid.cards>ul>li, .md-typeset .grid>.card {
 	border-width: 2px !important;
 }
@@ -28,11 +34,7 @@ body[data-md-color-scheme="slate"] {
 	mask-image: var(--md-admonition-icon--tree);
 }
 
-/*  HEADING */
-h1 {
-	/*color: red !important;*/
-	/*color: #009485;*/
-}
+
 
 .mermaid-container {
 	margin: 25px 0 !important;
