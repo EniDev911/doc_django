@@ -28,7 +28,7 @@ Si no tienes un proyecto creado y aún no tienes Django instalado, podemos reali
 
 Elige un destino para tu proyecto y luego crea un nuevo directorio con el nombre para el proyecto:
 
-```bash
+```bash title="terminal"
 mkdir prueba-shell-django && cd prueba-shell-django
 ```
 
@@ -128,16 +128,52 @@ Ahora podemos observar que la terminal entra en modo interactivo, invitandonos a
 	
 	In [1]:
 	```
+???+ info
+	Para salir del modo interactivo, debes escribir `exit()` o con la combinación de teclas <kbd>Ctrl</kbd> + <kbd>D</kbd>
+
+## **Conceptos de  ORM de Django**
+
+### **¿Qué es Django ORM?**
+
+Django ORM (Object-Relational Mapping) es una potente herramienta que permite interactuar con una base de datos relacional mediante código Python. Con Django ORM, podemos crear, recuperar, actualizar y eliminar registros en la base de datos mediante objetos y métodos Python. 
+
+<div align="center" class="mermaid-container">
+<div class="mermaid-title">Funcionamiento de un ORM</div>
+```mermaid
+graph TD
+    A[Aplicación Django] --> B[ORM]
+    B --> C[Base de Datos]
+    B -->|Genera consultas| C
+    A -->|Interacción| B
+```
+</div>
+
+
+### **¿Qué son los QuerySets?**
+
+Un QuerySet es una colección de objetos de base de datos que se pueden filtrar, ordenar y segmentar para limitar los resultados a un subconjunto específicos. En pocas palabras, un QuerySet es una colección de registros que cumplen con ciertas condiciones definidas en una consulta, pero no necesariamente se ejecuta inmediatamente contra la base de datos hasta que se necesita (esto se llama **lazy evaluation** o evaluación perezosa).
+
+<div align="center" class="mermaid-container">
+<div class="mermaid-title">Funcionamiento de los QuerySet</div>
+```mermaid
+graph TD
+    A[Crear QuerySet] --> B{¿Operación?}
+    B -->|Sí| C[Ejecutar consulta a la DB]
+    B -->|No| D[QuerySet perezoso]
+    C --> E[Devolver resultados]
+    D --> E
+```
+</div>
 
 Antes de profundizar más en el shell de Django y los QuerySets del ORM, debemos crear una aplicación para poder definir un modelo y realizar operaciones en la base de datos.
 
-Asumiendo que ya tenemos el proyecto generado, continuamos con la configuración de una aplicación usando el archivo `manage.py`:
+Asumiendo que ya en este punto, tienes el proyecto generado siguiendo los pasos anteriores en [crear un nuevo proyecto](#crear-un-nuevo-proyecto), continuamos con la configuración de una aplicación usando el archivo `manage.py`:
 
-```bash title="bash"
+```bash title="terminal"
 python manage.py startapp fruits
 ```
 
-Ahora podemos definir un modelo abriendo el archivo `fruits/models.py`:
+Ahora podemos definir un modelo abriendo el archivo `fruits/models.py` y definir el siguiente modelo:
 
 === "Modelo"
 	```py title="fuits/models.py"
@@ -200,8 +236,8 @@ INSTALLED_APPS = [
 
 Luego generamos una nueva migración con el comando `makemigrations` y corremos las migraciones pendientes con el comando `migrate`:
 
-=== "Bash"
-	```bash
+=== "Comandos"
+	```bash title="Terminal"
 	python manage.py makemigrations #(1)!
 	python manage.py migrate #(2)!
 	```
@@ -243,17 +279,14 @@ Luego generamos una nueva migración con el comando `makemigrations` y corremos 
 	```
 
 
-## Conceptos de  ORM de Django
 
-### ¿Qué es Django ORM?
+## **Operaciones ORM en el shell**
 
-Django ORM (Object-Relational Mapping) es una potente herramienta que permite interactuar con una base de datos relacional mediante código Python. Con Django ORM, podemos crear, recuperar, actualizar y eliminar registros en la base de datos mediante objetos y métodos Python.
+Ahora para comenzar a realizar operaciones, vamos a ingresar al shell como lo vimos anteriormente:
 
-### ¿Qué son los QuerySets?
-
-Un QuerySet es una colección de objetos de base de datos que se pueden filtrar, ordenar y segmentar para limitar los resultados a un subconjunto específicos
-
-## Operaciones ORM en el shell
+```bash title="terminal"
+python manage.py shell
+```
 
 ### Insertar :octicons-diff-added-16:
 
@@ -332,16 +365,34 @@ Otra forma de insertar un registro en una clase modelo es usar el método `creat
 
 Ahora veremos cómo insertar varios registros en una clase específica. Creamos una nueva clase `FruitsVendor` dentro de :octicons-file-code-16: `models.py` en la aplicación:
 
-```py title="fruits/models.py"
-class FruitsVendors(models.Model):
+=== "Modelo"
 
-	vendor_id = models.CharField(max_length=4, null=False, primary_key=True)
-	vendor_name = models.CharField(max_length=60)
-	vendor_location = models.CharField(max_length=40)
+	```py title="fruits/models.py"
+	class FruitsVendors(models.Model):
 
-	def __str__(self):
-		return f"{self.vendor_id} - {self.vendor_name} - {self.vendor_location}"
-```
+		vendor_id = models.CharField(max_length=4, null=False, primary_key=True)
+		vendor_name = models.CharField(max_length=60)
+		vendor_location = models.CharField(max_length=40)
+
+		def __str__(self):
+			return f"{self.vendor_id} - {self.vendor_name} - {self.vendor_location}"
+	```
+=== "Explorador"
+	
+	```plaintext hl_lines="9"
+	 .
+	├──  manage.py
+	├──  fruits
+	│   ├──  __init__.py
+	│   ├──  admin.py
+	│   ├──  apps.py
+	│   ├──  migrations
+	│   │   └──  __init__.py
+	│   ├──  models.py
+	│   ├──  tests.py
+	│   └──  views.py
+	└──  mysite
+	```
 
 En la nueva clase `FruitsVendors`, hemos definido un campo con llave primaria llamado `vendor_id`. Luego, definimos el método `__str__()` para mostrar todos los datos dentro de la clase en una cadena con formato.
 
@@ -417,6 +468,7 @@ Ahora podemos volver al shell e insertar múltiples registros en la clase `Fluit
 	 <FruitsVendors: FruitsVendors object (V003)>]
 	```
 
+Ahora que ya hemos guardado objetos en la base de datos, vamos a continuar con la operación de obtener esos registros.
 
 ### Listar :octicons-list-unordered-16:
 
@@ -564,6 +616,32 @@ En los siguientes ejemplos, buscaremos registros usando los operadores de mayor 
 	Out[2]: <QuerySet [<FruitsInfo: USA banana>]>
 	In [3]: FruitsInfo.objects.filter(energy__lte=250)
 	Out[3]: <QuerySet [<FruitsInfo: USA apple>]>
+	```
+#### operador - range
+
+En los siguientes ejemplos, buscaremos registros usando los operadores de range:
+
+=== ":octicons-code-16: python"
+	```py
+	from fruits.models import FruitsInfo
+	FruitsInfo.objects.filter(energy__range=(200, 300))
+	FruitsInfo.objects.filter(energy__range=(200, 400))
+	```
+=== ":octicons-terminal-16: shell python"
+	```
+	>>> from fruits.models import FruitsInfo
+	>>> FruitsInfo.objects.filter(energy__range=(200, 300))
+	<QuerySet [<FruitsInfo: USA apple>]>
+	>>> FruitsInfo.objects.filter(energy__range=(200, 400))
+	<QuerySet [<FruitsInfo: USA banana>, <FruitsInfo: USA apple>]>
+	```
+=== ":octicons-terminal-16: shell ipython"
+	```
+	In [1]: from fruits.models import FruitsInfo
+	In [2]: FruitsInfo.objects.filter(energy__range=(200, 300))
+	Out[2]: <QuerySet [<FruitsInfo: USA apple>]>
+	In [3]: FruitsInfo.objects.filter(energy__range=(200, 400))
+	Out[3]: <QuerySet [<FruitsInfo: USA banana>, <FruitsInfo: USA apple>]>
 	```
 
 ### Actualizar :octicons-sync-16:
