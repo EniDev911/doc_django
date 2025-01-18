@@ -1,5 +1,5 @@
 site_name: Django doc
-site_url: ""
+base_url: /doc_django/
 extra_css:
   - assets/stylesheets/fontawesome.css
   - assets/stylesheets/extra.css

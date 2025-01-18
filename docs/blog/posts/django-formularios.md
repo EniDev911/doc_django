@@ -1,5 +1,8 @@
 ---
 date: 2024-05-14
+categories:
+  - Django
+  - Formularios
 ---
 
 {% raw %}

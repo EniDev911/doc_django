@@ -10,16 +10,16 @@ En este artículo, aprenderemos a configurar el [sistema completo de autenticaci
 
 <!-- more -->
 
-## Crear un proyecto de Django
+## **Crear un proyecto de Django**
 
-Con su entorno virtual configurado y activado y Django instalado, ahora puede crear un proyecto:
+Con un entorno virtual configurado y activado y Django instalado, ahora puedes generar un nuevo proyecto:
+
+```bash title="terminal"
+django-admin startproject django_contrib_auth
+```
 
 !!! info "Recuerda"
 	Para configurar un entorno virtual y comenzar a trabajar con el framework Django, tienes el capítulo "Comenzar" en este sitio web.
-
-```bash
-django-admin startproject django_contrib_auth
-```
 
 Al ejecutarse el comando se crea una estructura de carpetas predeterminada, que incluye algunos archivos de Python y su aplicación de administración que tiene el mismo nombre que su proyecto:
 

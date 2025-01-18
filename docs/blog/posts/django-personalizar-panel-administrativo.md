@@ -87,7 +87,43 @@ Ahora podemos iniciar sesión con el superusuario en el panel adminsitrativo y a
     
 ![Página de login de Django admin](/assets/images/django-admin-login-success.png){style="border: 1px solid #ccc"}
 
-De forma predeterminada, Django incluye los modelos **Users** y **Groups**
+De forma predeterminada, Django incluye los modelos **Users** y **Groups** como parte de su sistema de autenticación y autorización. Estos modelos están definidos en la aplicación `django.contrib.auth`, que es una de las aplicaciones incluidas de forma predeterminada en la configuración de Django.
+
+### **Crear un modelo personalizado que replique la funcionalidad del modelo Group**
+
+Podemos crear un modelo de ejemplo llamado `Comite` que funcione de manera similar a `Group`, y luego asociarlo con los usuarios. Esto nos permite personalizar completamente el comportamiento y los nombres en nuestra aplicación, sin alterar el comportamiento de la aplicación de autenticación predeterminada.
+
+```py title="myapp/models.py"
+from django.contrib.auth.models import User, Permission
+from django.db import models
+
+class Comite(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+```
 
 
-El diseño de la interfaz administrativa de Django es bastante básico por defecto, pero se puede personalizar fácilmente para ajustarse a la identidad visual de tu proyecto.
+#### **Crear una relación muchos a muchos con User**
+
+Luego, añadimos un campo de relación muchos a muchos en el modelo `User` que vincule a los usuarios con los comités, al igual que se hace con el modelo `Group` de manera predeterminada. Una opción es **extender el modelo** `User` y crear un modelo llamado por ejemplo `Profile` que este relacionado con `User`, y dentro de este agregar el campo de relación `Comite`:
+
+```py title="myapp/models.py"
+from django.contrib.auth.models import User
+from django.db import models
+from .models import Comite  # Asegúrate de importar el modelo Comite
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    comites = models.ManyToManyField(Comite, related_name="miembros", blank=True)
+
+    def __str__(self):
+        return f"Perfil de {self.user.username}"
+```
+
+
+
+
+
+
