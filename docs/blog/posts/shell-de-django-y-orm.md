@@ -3,7 +3,7 @@ date: 2024-05-15
 title: Shell de Django, ORM y QuerySets
 ---
 
-El shell de Django nos permite escribir declaraciones de Python desde la línea de comandos para interactuar con el proyecto de Django.
+El **shell de Django** nos permite escribir declaraciones de Python desde la línea de comandos para interactuar con el proyecto de Django.
 
 <!-- more -->
 

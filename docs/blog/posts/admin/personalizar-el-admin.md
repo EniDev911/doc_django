@@ -1,6 +1,7 @@
 ---
 date: 2024-08-14
 title: Personalizar el Panel Administrativo de Django
+tags: ["admin", "customizar"]
 ---
 
 Una de las características de Django es que cuenta con un panel de administración listo para usarse, con funciones básicas como crear, leer, editar y eliminar modelos, usuarios, grupos y permisos. Todo listo con tan solo generar un nuevo proyecto. Pero a menudo se desea modificar su apariencia, las vistas de los modelos o incluso la funcionalidad para que se ajuste a las necesidades del proyecto.

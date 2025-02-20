@@ -1,5 +1,5 @@
 site_name: Django doc
-base_url: /doc_django/
+base_url: https://enidev911.github.io/doc_django/
 extra_css:
   - assets/stylesheets/fontawesome.css
   - assets/stylesheets/extra.css
@@ -98,7 +98,7 @@ plugins:
       blog_toc: true
       post_date_format: short # long | medium | short
       post_url_format: "{slug}" # "{date}/{slug}"
-copyright: Copyright &copy; 2024 Marco Contreras - Enidev911
+copyright: Copyright &copy; 2024 @mcherrera
 
 extra:
   generator: false
@@ -108,4 +108,4 @@ extra:
       link: https://github.com/enidev911
     - icon: /material/mailbox
       name: contacto
-      link: mailto:enidev911@gmail.com
+      link: mailto:contacto@mcherrera.dev
