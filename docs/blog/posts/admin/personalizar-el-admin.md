@@ -118,7 +118,29 @@ Ahora, cuando accedes al panel administrativo, deberías ver todos los textos tr
 
 ![Panel administrativo, en español]({{ get_image_url('assets/images/django-admin-es-cl.webp') }}){:.bordered-image}
 
-### **2. Cambiar Estilos con CSS Pesonalizado**
+### **2. Personalizar el título del panel administrativo**
+
+Puedes cambiar el título del panel administrativo (que aparece en la parte superior) para que coincida con el nombre de tu proyecto o tu marca. Esto se puede hacer editado el archivo `_site/urls.py` o en un archivo de configuración similar, utilizando las propiedades e `admin.site`:
+
+```py title="urls.py" hl_lines="8 9 10"
+from django.contrib import admin
+from django.urls import path
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+]
+
+admin.site.site_header = "Mi sitio web" # (1)!
+admin.site.site_title = "Portal de mi web" # (2)!
+admin.site.index_title = "Bienvenidos al portal de administración"
+```
+
+1. `site_header`: Título en la parte superior del panel de administración.
+2. `site_title`: Título en la pestaña del navegador.
+
+![Panel administrativo, personalizar títulos]({{ get_image_url('assets/images/django-admin-set-titles.webp') }}){:.bordered-image}
+
+### **3. Cambiar Estilos con CSS Pesonalizado**
 
 Aunque el panel de administración de Django es funcional desde el principio, su apariencia es bastante simple. Si deseas darle un toque más personalizado, puedes hacerlo de varias maneras, desde cambiar los estilos CSS hasta usar un tema de terceros.
 
@@ -164,13 +186,18 @@ body {
 }
 ```
 
+Para identificar los elementos que deseas manipular, abre las **devtools** del navegador:
+
+![devtools del navegador, para identificar los elementos del panel administrativo]({{ get_image_url('assets/images/django-admin-devtools-css.webp') }}){: .bordered-image }
+
 #### **3. Sobrescribir la Plantilla Base**
 
 Para que Django cargue el archivo CSS creado anteriormente, debes sobrescribir la plantilla base del panel administrativo. Crea un directorio llamado `templates/admin` en la raíz y coloca un archivo llamado `base_site.html`, el contenido lo podemos copiar de la plantilla base de administración de Django.
 
-```html title="base_site.html" hl_lines="2 5"
-{% raw %}{% extends "admin/base.html" %}
-{% load static %}
+{% raw %}
+```html title="templates/admin/base_site.html" hl_lines="2 5"
+{% extends "admin/base.html" %}
+{% load static %} <!-- (1)! -->
 
 {% block extrahead %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/custom_admin.css' %}">
@@ -184,8 +211,12 @@ Para que Django cargue el archivo CSS creado anteriormente, debes sobrescribir l
 {% if user.is_anonymous %}
   {% include "admin/color_theme_toggle.html" %}
 {% endif %}
-{% endblock %}{% endraw %}
+{% endblock %}
 ```
+
+1. Esto es un tag de Django que se utiliza para cargar la funcionalidad que Django pueda cargar correctamente el tag `{% static %}`.
+{% endraw %}
+
 
 ### **Crear un modelo personalizado que replique la funcionalidad del modelo Group**
 
