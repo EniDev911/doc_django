@@ -39,7 +39,7 @@ Ahora tenemos que ejecutar el servidor de desarrollo con el comando `python mana
 
 Como resultado al abrir la URL, veremos la página por defecto de Django:
 
-![Página por defecto de Django](/assets/images/django-project-start.png){style="border: 1px solid #ccc"}
+![Página por defecto de Django]({{ get_image_url('assets/images/django-project-start.png') }}){style="border: 1px solid #ccc"}
 
 Sin hacer nada más, podemos ir a <http://127.0.0.1:8080/admin> y veremos la página de login:
 

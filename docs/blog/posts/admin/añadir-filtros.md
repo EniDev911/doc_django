@@ -44,3 +44,4 @@ admin.site.register(Post, PostAdmin)
 
 ## **Búsqueda por un Campo de Texto**
 
+Django Admin ofrece la opción `search_fields` en `ModelAdmin`. Si se configura, se habilitará un cuadro de búsqueda en la página de lista para filtrar los elementos del modelo.

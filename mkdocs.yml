@@ -1,7 +1,4 @@
 site_name: Django doc
-base_url: /doc_django/
-site_url: https://enidev911.github.io/doc_django/
-repo_url: https://enidev911.github.io/doc_django/
 
 extra_css:
   - assets/stylesheets/fontawesome.css
@@ -86,7 +83,6 @@ markdown_extensions:
   - pymdownx.superfences
 
 plugins:
-  - macros # pip install mkdocs-macros-plugin
   - search
   - tags
   - glightbox:
@@ -101,6 +97,9 @@ plugins:
       blog_toc: true
       post_date_format: short # long | medium | short
       post_url_format: "{slug}" # "{date}/{slug}"
+  - macros:
+      module_name: set_image_url
+
 copyright: Copyright &copy; 2024 @mcherrera
 
 extra:
