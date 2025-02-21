@@ -14,6 +14,11 @@ h1 {
 	font-family: 'Lucida Sans', sans-serif;
   }
 
+.md-typeset h2 > a {
+	font-weight: bolder;
+}
+
+
 .grid.cards>ul>li, .md-typeset .grid>.card {
 	border-width: 2px !important;
 }
@@ -37,6 +42,11 @@ body[data-md-color-scheme="slate"] {
 	mask-image: var(--md-admonition-icon--tree);
 }
 
+.bordered-image {
+    border: 1px solid #ccc;
+    padding: 3px;
+    border-radius: 4px;
+}
 
 
 .mermaid-container {

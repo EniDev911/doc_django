@@ -4,18 +4,39 @@ title: Personalizar el Panel Administrativo de Django
 tags: ["admin", "customizar"]
 ---
 
-Una de las características de Django es que cuenta con un panel de administración listo para usarse, con funciones básicas como crear, leer, editar y eliminar modelos, usuarios, grupos y permisos. Todo listo con tan solo generar un nuevo proyecto. Pero a menudo se desea modificar su apariencia, las vistas de los modelos o incluso la funcionalidad para que se ajuste a las necesidades del proyecto.
+Django es conocido por su rapidez en el desarrollo y su potente sistema de administración listo para usarse. Desde el momento en que creas un nuevo proyecto con Django, el panel de administración se configura automáticamente, ofreciendo una interfaz para gestionar modelos, usuarios, permisos y mucho más. Sin embargo, es común que, a medida que avanzamos en el desarrollo de nuestra aplicación, necesitemos personalizar este panel para adaptarlo a las necesidades específicas de nuestro proyecto. Afortunadamente, Django facilita esta personalización tanto en términos de apariencia como de funcionalidad.
 
 <!-- more -->
 
-## **Accediendo al Panel Administrativo de Django**
+## **Prepararando el Escenario**
 
 Antes de acceder al panel administrativo, debemos contar con un proyecto de Django. Para ello debemos seguir los siguientes pasos:
 
 {% set project = "custom-admin-django" %}
 {% include "includes/new-project.html" %}
 
-Ahora tenemos que ejecutar el servidor de desarrollo con el comando `python manage.py runserver` y visitamos la URL <http://127.0.0.1:8000/>:
+## **Configurar el Panel Administrativo**
+
+Una vez que hayas creado tu proyecto, Django ya incluye un panel administrativo listo para usarse, pero para poder acceder a él debes asegurarte de haber realizado algunos pasos previos:
+
+### **1. Ejecutar Migraciones**
+
+
+```bash title="terminal"
+python manage.py migrate
+```
+
+### **2. Crear un superusuario**
+
+El superusuario es el usuario con privilegios administrativos que podrás utilizar para iniciar sesión en el panel. Para crear uno, ejecuta el siguiente comando:
+
+```bash title="terminal"
+python manage.py createsuperuser
+```
+
+### **3. Iniciar el servidor**
+
+Ahora debemos ejecutar el servidor de desarrollo con el comando `python manage.py runserver`:
 
 === "Comando"
     ```bash title="terminal"
@@ -37,15 +58,20 @@ Ahora tenemos que ejecutar el servidor de desarrollo con el comando `python mana
     Quit the server with CONTROL-C.
     ```
 
-Como resultado al abrir la URL, veremos la página por defecto de Django:
+???+ info
+    El comando anterior lanza el servidor de desarrollo en el puerto 8080.
 
-![Página por defecto de Django]({{ get_image_url('assets/images/django-project-start.png') }}){style="border: 1px solid #ccc"}
+## **Acceder al Panel de Administración**
 
-Sin hacer nada más, podemos ir a <http://127.0.0.1:8080/admin> y veremos la página de login:
+Una vez que el servidor esté en funcionamiento, puedes abrir la URL <http://127.0.0.1:8080/> y se mostrará la página predeterminada de Django:
 
-![Página de login de Django admin](/assets/images/django-admin-login.png){style="border: 1px solid #ccc"}
+![Página por defecto de Django]({{ get_image_url('assets/images/django-project-start.webp') }}){:.bordered-image}
 
-Todo esto se debe que un proyecto creado con el comando `startproject` ya viene correctamente configurado y trae habilitado el panel administrativo. Significa que ya trae las aplicaciones `django.contrib.admin`, `django.contrib.auth`, y `django.contrib.contenttypes` por defecto en el archivo `settings.py`:
+Sin realizar ningún otro paso, podemos acceder a <http://127.0.0.1:8080/admin> y se mostrará la página de iniciar sesión del panel de administración:
+
+![Página de login de Django admin]({{ get_image_url('assets/images/django-admin-login.webp') }}){:.bordered-image}
+
+Esto se debe a que un proyecto creado con el comando `startproject` ya viene correctamente configurado y tiene habilitado el panel administrativo. Esto implica que las aplicaciones `django.contrib.admin`, `django.contrib.auth` y `django.contrib.contenttypes` están habilitadas por defecto en el archivo `settings.py`:
 
 ```py title="settings.py"
 INSTALLED_APPS = [
@@ -67,28 +93,99 @@ urlpatterns = [
 ]
 ```
 
-Hasta ahora solo hemos podido visualizar la página de login, pero para acceder tenemos que ejecutar las migraciones y luego crear a un **superusuario** administrador.
-
-**Ejecutar Migraciones**
-
-```bash title="terminal"
-python manage.py migrate
-```
-
-**Crear superusuario**
-
-```bash title="terminal"
-DJANGO_SUPERUSER_PASSWORD=123456 python manage.py createsuperuser --username=admin --email=admin@example.com --noinput
-```
-
-???+ info
-    El comando anterior permite la creación desatendida del superusuario para ingresar como al panel administrativo.
-
-Ahora podemos iniciar sesión con el superusuario en el panel adminsitrativo y al iniciar la sesión se nos muestra la siguinte interfaz:
+Ahora podemos acceder al panel administrativo iniciando sesión con el superusuario. Al hacerlo, se nos mostrará la siguiente interfaz:
     
-![Página de login de Django admin](/assets/images/django-admin-login-success.png){style="border: 1px solid #ccc"}
+![Página de login de Django admin]({{ get_image_url('assets/images/django-admin-login-success.png') }}){:.bordered-image}
 
 De forma predeterminada, Django incluye los modelos **Users** y **Groups** como parte de su sistema de autenticación y autorización. Estos modelos están definidos en la aplicación `django.contrib.auth`, que es una de las aplicaciones incluidas de forma predeterminada en la configuración de Django.
+
+## **Personalización Básica**
+
+### **1. Cambiar el Idioma del Panel Administrativo**
+
+Django viene con soporte para múltiples idiomas. En nuestro caso si deseamos cambiar el idioma del panel administrativo al español, debemos realizar los siguientes pasos:
+
+1. **Abrir el archivo `_site/settings.py`**.
+2. **Configurar el idioma**. En el archivo settings.py, encontrarás la opción `LANGUAGE_CODE`. Aquí puedes especificar el idioma que deseas utilizar en el panel administrativo.
+
+Por ejemplo, para cambiar el idioma a **español (Chile)**, debes establecer `LANGUAGE_CODE` a `'es-cl'`:
+
+```python title="settings.py" linenums="106"
+LANGUAGE_CODE = 'es-cl'
+```
+
+Ahora, cuando accedes al panel administrativo, deberías ver todos los textos traducidos al idioma que has configurado. Esto incluye todas las etiquetas de los formularios, menús y otros elementos del panel.
+
+![Panel administrativo, en español]({{ get_image_url('assets/images/django-admin-es-cl.webp') }}){:.bordered-image}
+
+### **2. Cambiar Estilos con CSS Pesonalizado**
+
+Aunque el panel de administración de Django es funcional desde el principio, su apariencia es bastante simple. Si deseas darle un toque más personalizado, puedes hacerlo de varias maneras, desde cambiar los estilos CSS hasta usar un tema de terceros.
+
+Para cambiar estilos con CSS personalizado, sigue estos pasos:
+
+#### **1. Configurar los archivos estáticos**
+
+Django proporciona configuraciones específicas para gestionar los archivos estáticos. Vamos a configurarlos correctamente. En el archivo `_site/settings.py`, asegúrate de tener las siguientes configuraciones para los archivos estáticos:
+
+```py title="setting.py"  linenums="119"
+# Directorio donde se encuentran los archivos estáticos en desarrollo
+STATIC_URL = '/static/'
+
+# En desarrollo, Django sirve archivos estáticos desde la carpeta definida aquí
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+# Carpeta en la que se almacenarán los archivos estáticos en producción
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# en producción se utiliza el comando `python manage.py collectstatic` para recopilar todos los archivos estáticos.
+```
+
+#### **2.Crear el archivo CSS**
+
+Crea un archivo CSS en el directorio estático de tu proyecto, en nuestro caso en la raíz en un directorio `static/css/custom_admin.css`. Dentro de este archivo, puedes añadir los estilos que desees para modificar la apariencia del panel. Ejemplo:
+
+
+```css title="custom_admin.css"
+body {
+    background-color: #f4f4f4;
+}
+
+#content-main {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.module h2 {
+    color: #1e73be;
+}
+```
+
+#### **3. Sobrescribir la Plantilla Base**
+
+Para que Django cargue el archivo CSS creado anteriormente, debes sobrescribir la plantilla base del panel administrativo. Crea un directorio llamado `templates/admin` en la raíz y coloca un archivo llamado `base_site.html`, el contenido lo podemos copiar de la plantilla base de administración de Django.
+
+```html title="base_site.html" hl_lines="2 5"
+{% raw %}{% extends "admin/base.html" %}
+{% load static %}
+
+{% block extrahead %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/custom_admin.css' %}">
+{% endblock %}
+
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+<div id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a></div>
+{% if user.is_anonymous %}
+  {% include "admin/color_theme_toggle.html" %}
+{% endif %}
+{% endblock %}{% endraw %}
+```
 
 ### **Crear un modelo personalizado que replique la funcionalidad del modelo Group**
 
@@ -104,7 +201,6 @@ class Comite(models.Model):
     def __str__(self):
         return self.name
 ```
-
 
 #### **Crear una relación muchos a muchos con User**
 
@@ -123,8 +219,10 @@ class UserProfile(models.Model):
         return f"Perfil de {self.user.username}"
 ```
 
+## **Usar Temas de Tercero**
 
+## **Formularios Personalizados**
 
-
+Puedes crear formularios personalizados para tus modelos
 
 

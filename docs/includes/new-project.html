@@ -1,4 +1,4 @@
-**1. Crear un nuevo directorio para el proyecto**
+### **1. Crear un nuevo directorio para el proyecto**
 
 Elige un destino para tu proyecto y luego crea un nuevo directorio con el nombre para el proyecto:
 
@@ -9,15 +9,15 @@ mkdir {{ project }} && cd {{ project }}
 ???+ info
 	Modifica el nombre por el que desees, el comando anterior simplemente está creando un nuevo directorio y entrando en ese directorio a la vez. En distribuciones basadas en Linux, el comando anterior se puede abreviar con `take {{ project }}`
 
-**2. Crear un entorno virtual**
+### **2. Crear un entorno virtual**
 
-Existen muchas maneras de crear un entorno virtual, para efectos prácticos haremos uso del paquete **venv** incluido en la mayoría de instalaciones de Python:
+Existen muchas maneras de crear entornos virtuales, para efectos prácticos haremos uso del paquete **venv** incluido en la mayoría de instalaciones de Python:
 
 ```bash title="terminal"
 python3 -m venv venv
 ```
 
-**3. Activar entorno virtual**
+### **3. Activar entorno virtual**
 
 Una vez se crea el entorno virtual, observarás que se creó una nueva carpeta con el nombre de **venv** y dentro se encuentra una instalación limpia de Python que tenemos que activar para empezar a instalar los paquetes. Para ello debemos ejecutar el comando que corresponda según el sistema operativo que utilices:
 
@@ -30,7 +30,7 @@ Una vez se crea el entorno virtual, observarás que se creó una nueva carpeta c
 	.venv\Scripts\activate
 	```
 
-**4. Instalar Django**
+### **4. Instalar Django**
 
 Ahora que ya tenemos el entorno virtual creado y activado, podemos instalar django usando pip:
 
@@ -38,7 +38,7 @@ Ahora que ya tenemos el entorno virtual creado y activado, podemos instalar djan
 pip install django
 ```
 
-**5. Generar un nuevo proyecto de django**
+### **5. Generar un nuevo proyecto de django**
 
 Una vez instalado django, procedemos a generar un nuevo proyecto en el directorio actual:
 
