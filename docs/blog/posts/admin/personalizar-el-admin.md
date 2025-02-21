@@ -132,15 +132,21 @@ urlpatterns = [
 
 admin.site.site_header = "Mi sitio web" # (1)!
 admin.site.site_title = "Portal de mi web" # (2)!
-admin.site.index_title = "Bienvenidos al portal de administración"
+admin.site.index_title = "Bienvenidos al portal de administración" # (3)!
 ```
 
 1. `site_header`: Título en la parte superior del panel de administración.
 2. `site_title`: Título en la pestaña del navegador.
+3. `index_title`: Título en la página principal del panel administrativo.
+
+!!! info ""
+
+    No es necesario tocar las plantillas ni hacer ninguna otra modificación, y todo debería funcionar correctamente con estos cambios.
 
 ![Panel administrativo, personalizar títulos]({{ get_image_url('assets/images/django-admin-set-titles.webp') }}){:.bordered-image}
 
-### **3. Cambiar Estilos con CSS Pesonalizado**
+
+### **3. Personalizar la paleta de colores y estilos con CSS**
 
 Aunque el panel de administración de Django es funcional desde el principio, su apariencia es bastante simple. Si deseas darle un toque más personalizado, puedes hacerlo de varias maneras, desde cambiar los estilos CSS hasta usar un tema de terceros.
 
@@ -165,7 +171,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # en producción se utiliza el comando `python manage.py collectstatic` para recopilar todos los archivos estáticos.
 ```
 
-#### **2.Crear el archivo CSS**
+#### **2.Crear y editar un archivo CSS personalizado**
 
 Crea un archivo CSS en el directorio estático de tu proyecto, en nuestro caso en la raíz en un directorio `static/css/custom_admin.css`. Dentro de este archivo, puedes añadir los estilos que desees para modificar la apariencia del panel. Ejemplo:
 
@@ -180,22 +186,22 @@ body {
     border-radius: 8px;
     padding: 20px;
 }
-
-.module h2 {
-    color: #1e73be;
-}
 ```
 
-Para identificar los elementos que deseas manipular, abre las **devtools** del navegador:
+Para identificar los elementos específicos que desees manipular, abre las **devtools** del navegador y juega con el selector:
 
 ![devtools del navegador, para identificar los elementos del panel administrativo]({{ get_image_url('assets/images/django-admin-devtools-css.webp') }}){: .bordered-image }
+
+El panel administrativo de Django utiliza **variables CSS** personalizables para definir una serie de colores y estilos generales. Gracias a esto, puedes sobrescribir los colores del panel de administración sin tener que modificar todo el CSS. Para ver las variables que usa Django, puedes abrir nuevamente las **devtools** del navegador, pero ahora en la pestaña **Source**:
+
+![Cambio de colores con las variables CSS en el panel administrativo]({{ get_image_url('assets/images/django-admin-set-cariables-css.webp') }}){: .bordered-image }
 
 #### **3. Sobrescribir la Plantilla Base**
 
 Para que Django cargue el archivo CSS creado anteriormente, debes sobrescribir la plantilla base del panel administrativo. Crea un directorio llamado `templates/admin` en la raíz y coloca un archivo llamado `base_site.html`, el contenido lo podemos copiar de la plantilla base de administración de Django.
 
 {% raw %}
-```html title="templates/admin/base_site.html" hl_lines="2 5"
+```html title="templates/admin/base_site.html" hl_lines="2 4 5 6"
 {% extends "admin/base.html" %}
 {% load static %} <!-- (1)! -->
 
@@ -217,40 +223,32 @@ Para que Django cargue el archivo CSS creado anteriormente, debes sobrescribir l
 1. Esto es un tag de Django que se utiliza para cargar la funcionalidad que Django pueda cargar correctamente el tag `{% static %}`.
 {% endraw %}
 
+Para que el template sea reconocido por Django, debes agregar la ubicación en el archivo `_site/settings.py` del proyecto:
 
-### **Crear un modelo personalizado que replique la funcionalidad del modelo Group**
-
-Podemos crear un modelo de ejemplo llamado `Comite` que funcione de manera similar a `Group`, y luego asociarlo con los usuarios. Esto nos permite personalizar completamente el comportamiento y los nombres en nuestra aplicación, sin alterar el comportamiento de la aplicación de autenticación predeterminada.
-
-```py title="myapp/models.py"
-from django.contrib.auth.models import User, Permission
-from django.db import models
-
-class Comite(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
-    def __str__(self):
-        return self.name
+```py title="_site/settings.py" hl_lines="5"
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            BASE_DIR / 'templates',
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 ```
 
-#### **Crear una relación muchos a muchos con User**
-
-Luego, añadimos un campo de relación muchos a muchos en el modelo `User` que vincule a los usuarios con los comités, al igual que se hace con el modelo `Group` de manera predeterminada. Una opción es **extender el modelo** `User` y crear un modelo llamado por ejemplo `Profile` que este relacionado con `User`, y dentro de este agregar el campo de relación `Comite`:
-
-```py title="myapp/models.py"
-from django.contrib.auth.models import User
-from django.db import models
-from .models import Comite  # Asegúrate de importar el modelo Comite
-
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    comites = models.ManyToManyField(Comite, related_name="miembros", blank=True)
-
-    def __str__(self):
-        return f"Perfil de {self.user.username}"
-```
 
 ## **Usar Temas de Tercero**
+
+
 
 ## **Formularios Personalizados**
 
