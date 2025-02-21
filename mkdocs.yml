@@ -1,7 +1,7 @@
 site_name: Django doc
 base_url: /doc_django/
 site_url: https://enidev911.github.io/doc_django/
-repo_url: https://github.com/mkdocs/mkdocs/
+repo_url: https://enidev911.github.io/doc_django/
 
 extra_css:
   - assets/stylesheets/fontawesome.css
