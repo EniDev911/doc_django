@@ -1,0 +1,1524 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../desplegar-django-en-flyio/">
+      
+      
+        <link rel="next" href="../personalizar-el-panel-administrativo-de-django/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.5">
+    
+    
+      
+        <title>Shell de Django, ORM y QuerySets - Django doc</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.8608ea7d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CNerd:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Nerd"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/fontawesome.css">
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#que-es-esto-de-django-shell" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Django doc" class="md-header__button md-logo" aria-label="Django doc" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Django doc
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Shell de Django, ORM y QuerySets
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../configurar-entorno-virtual/" class="md-tabs__link">
+          
+  
+  Comenzar
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="../" class="md-tabs__link">
+        
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Django doc" class="md-nav__button md-logo" aria-label="Django doc" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Django doc
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../configurar-entorno-virtual/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Comenzar
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#que-es-esto-de-django-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      ¿Qué es esto de Django Shell?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accediendo-al-shell-de-django" class="md-nav__link">
+    <span class="md-ellipsis">
+      Accediendo al Shell de Django
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Accediendo al Shell de Django">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#crear-un-nuevo-proyecto" class="md-nav__link">
+    <span class="md-ellipsis">
+      Crear un nuevo proyecto
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conceptos-de-orm-de-django" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conceptos de ORM de Django
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Conceptos de ORM de Django">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#que-es-django-orm" class="md-nav__link">
+    <span class="md-ellipsis">
+      ¿Qué es Django ORM?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#que-son-los-querysets" class="md-nav__link">
+    <span class="md-ellipsis">
+      ¿Qué son los QuerySets?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operaciones-orm-en-el-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operaciones ORM en el shell
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Operaciones ORM en el shell">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#insertar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Insertar
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Insertar">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metodo-save" class="md-nav__link">
+    <span class="md-ellipsis">
+      método save()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metodo-create" class="md-nav__link">
+    <span class="md-ellipsis">
+      método create()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insertar-multiples-registros" class="md-nav__link">
+    <span class="md-ellipsis">
+      Insertar múltiples registros
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Insertar múltiples registros">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metodo-bulk_create" class="md-nav__link">
+    <span class="md-ellipsis">
+      método bulk_create()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Listar
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Listar">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metodo-all" class="md-nav__link">
+    <span class="md-ellipsis">
+      método all()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metodo-get" class="md-nav__link">
+    <span class="md-ellipsis">
+      método get()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#busquedas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Búsquedas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Búsquedas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operador-contains" class="md-nav__link">
+    <span class="md-ellipsis">
+      operador - contains
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operador-gte-y-lte" class="md-nav__link">
+    <span class="md-ellipsis">
+      operador - gte y lte
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operador-range" class="md-nav__link">
+    <span class="md-ellipsis">
+      operador - range
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#actualizar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Actualizar
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eliminar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Eliminar
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Eliminar">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#eliminar-un-registro" class="md-nav__link">
+    <span class="md-ellipsis">
+      Eliminar un registro
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eliminar-varios-registros" class="md-nav__link">
+    <span class="md-ellipsis">
+      Eliminar varios registros
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Regresar al índice
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2024-05-15 00:00:00+00:00" class="md-ellipsis">15/5/24</time>
+                      </div>
+                    </li>
+                    
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              12 minutos de lectura
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+
+
+  <h1>Shell de Django, ORM y QuerySets</h1>
+
+<p>El <strong>shell de Django</strong> nos permite escribir declaraciones de Python desde la línea de comandos para interactuar con el proyecto de Django.</p>
+<!-- more -->
+
+<div class="admonition tip django">
+<p class="admonition-title">Tip</p>
+<p>El shell de Django es muy potente, pero muchos desarrolladores principiantes subestiman su utilidad en el proceso de desarrollo y depuración.</p>
+</div>
+<h2 id="que-es-esto-de-django-shell"><strong>¿Qué es esto de Django Shell?</strong></h2>
+<p>El <strong>shell de Django</strong> es una interfaz de línea de comandos interactivo que combina la funcionalidad del framework Django con el shell de Python, iPython, bPython (estos dos últimos, se deben instalar por aparte en la mayoría de los casos). El shell de Django carga los parámetros y las configuraciones específicas del proyecto, lo que permite aislar el entorno de trabajo y centrarse en el proyecto en particular.</p>
+<p>Una de las principales funciones que ofrece este shell es el fácil acceso al mapeador relacional de objetos (ORM), que permite al desarrollador interactuar directamente con la base de datos. El ORM es responsable de realizar consultas a la base de datos dentro de un proyecto de Django. El mapeador relacional de objetos reduce la necesidad de un amplio conocimiento de las bases de datos relacionales y elimina la necesidad de utilizar consultas SQL dentro del proyecto en la mayoría de los casos.</p>
+<h2 id="accediendo-al-shell-de-django"><strong>Accediendo al Shell de Django</strong></h2>
+<p>Se puede acceder al shell de Django mediante el comando <code>shell</code> en un proyecto de Django. Por ende es necesario tener un proyecto Django.</p>
+<h3 id="crear-un-nuevo-proyecto"><strong>Crear un nuevo proyecto</strong></h3>
+<p>Si no tienes un proyecto creado y aún no tienes Django instalado, podemos realizar los siguietes pasos para generar uno nuevo:</p>
+<p><strong>1. Crear un nuevo directorio para el proyecto</strong></p>
+<p>Elige un destino para tu proyecto y luego crea un nuevo directorio con el nombre para el proyecto:</p>
+<div class="highlight"><span class="filename">terminal</span><pre><span></span><code>mkdir<span class="w"> </span>prueba-shell-django<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>prueba-shell-django
+</code></pre></div>
+<details class="info" open="open">
+<summary>Info</summary>
+<p>Modifica el nombre por el que desees, el comando anterior simplemente está creando un nuevo directorio y entrando en ese directorio a la vez. En distribuciones basadas en Linux, el comando anterior se puede abreviar con <code>take prueba-shell-django</code></p>
+</details>
+<p><strong>2. Crear un entorno virtual</strong></p>
+<p>Existen muchas maneras de crear un entorno virtual, para efectos prácticos haremos uso del paquete <strong>venv</strong> incluido en la mayoría de instalaciones de Python:</p>
+<div class="highlight"><span class="filename">terminal</span><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+</code></pre></div>
+<p><strong>3. Activar entorno virtual</strong></p>
+<p>Una vez se crea el entorno virtual, observarás que se creó una nueva carpeta con el nombre de <strong>venv</strong> y dentro se encuentra una instalación limpia de Python que tenemos que activar para empezar a instalar los paquetes. Para ello debemos ejecutar el comando que corresponda según el sistema operativo que utilices:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> Linux, macOS</label><label for="__tabbed_1_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> Windows</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>venv/bin/activate
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>.venv\Scripts\activate
+</code></pre></div>
+</div>
+</div>
+</div>
+<p><strong>4. Instalar Django</strong></p>
+<p>Ahora que ya tenemos el entorno virtual creado y activado, podemos instalar django usando pip:</p>
+<div class="highlight"><span class="filename">terminal</span><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>django
+</code></pre></div>
+<p><strong>5. Generar un nuevo proyecto de django</strong></p>
+<p>Una vez instalado django, procedemos a generar un nuevo proyecto en el directorio actual:</p>
+<div class="highlight"><span class="filename">terminal</span><pre><span></span><code>django-admin<span class="w"> </span>startproject<span class="w"> </span>_site<span class="w"> </span>.
+</code></pre></div>
+<p>Una vez generado el proyecto, tendrás disponible el archivo <code>manage.py</code> en el proyecto:</p>
+<div class="highlight"><span class="filename">Archivos del proyecto</span><pre><span></span><code> prueba-shell-django
+├──  venv
+<span class="hll">├──  manage.py
+</span>└──  mysite
+    ├──  __init__.py
+    ├──  asgi.py
+    ├──  settings.py
+    ├──  urls.py
+    └──  wsgi.py
+</code></pre></div>
+<p>Ahora podemos ejecutar el siguiente comando para ingresar al shell de Django:</p>
+<div class="highlight"><span class="filename">terminal</span><pre><span></span><code>python<span class="w"> </span>manage.py<span class="w"> </span>shell
+</code></pre></div>
+<details class="info" open="open">
+<summary>Info</summary>
+<p>Si tenemos <a href="https://pypi.org/project/ipython/"><code>ipython</code></a> o <a href="https://pypi.org/project/bpython/"><code>bpython</code></a> instalado, se ingresa de la siguiente manera:
+<div class="highlight"><span class="filename">ipython</span><pre><span></span><code>python<span class="w"> </span>manage.py<span class="w"> </span>shell<span class="w"> </span>-i<span class="w"> </span>ipython
+</code></pre></div>
+<div class="highlight"><span class="filename">bpython</span><pre><span></span><code>python<span class="w"> </span>manage.py<span class="w"> </span>shell<span class="w"> </span>-i<span class="w"> </span>bpython
+</code></pre></div></p>
+</details>
+<p>Ahora podemos observar que la terminal entra en modo interactivo, invitandonos a escribir nuevas instrucciones:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:3"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell python</label><label for="__tabbed_2_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell bpython</label><label for="__tabbed_2_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell ipython</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>Python 3.9.2 (default, Feb 28 2021, 17:03:44) 
+[GCC 10.2.1 20210110] on linux
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+(InteractiveConsole)
+&gt;&gt;&gt; 
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt;
+Welcome to bpython! Press &lt;F1&gt; for help.
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>Python 3.9.2 (default, Feb 28 2021, 17:03:44)
+Type &#39;copyright&#39;, &#39;credits&#39; or &#39;license&#39; for more information
+IPython 8.18.1 -- An enhanced Interactive Python. Type &#39;?&#39; for help.
+
+In [1]:
+</code></pre></div>
+</div>
+</div>
+</div>
+<details class="info" open="open">
+<summary>Info</summary>
+<p>Para salir del modo interactivo, debes escribir <code>exit()</code> o con la combinación de teclas <kbd>Ctrl</kbd> + <kbd>D</kbd></p>
+</details>
+<h2 id="conceptos-de-orm-de-django"><strong>Conceptos de  ORM de Django</strong></h2>
+<h3 id="que-es-django-orm"><strong>¿Qué es Django ORM?</strong></h3>
+<p>Django ORM (Object-Relational Mapping) es una potente herramienta que permite interactuar con una base de datos relacional mediante código Python. Con Django ORM, podemos crear, recuperar, actualizar y eliminar registros en la base de datos mediante objetos y métodos Python. </p>
+<div align="center" class="mermaid-container">
+<div class="mermaid-title">Funcionamiento de un ORM</div>
+<pre class="mermaid"><code>graph TD
+    A[Aplicación Django] --&gt; B[ORM]
+    B --&gt; C[Base de Datos]
+    B --&gt;|Genera consultas| C
+    A --&gt;|Interacción| B</code></pre>
+</div>
+
+<h3 id="que-son-los-querysets"><strong>¿Qué son los QuerySets?</strong></h3>
+<p>Un QuerySet es una colección de objetos de base de datos que se pueden filtrar, ordenar y segmentar para limitar los resultados a un subconjunto específicos. En pocas palabras, un QuerySet es una colección de registros que cumplen con ciertas condiciones definidas en una consulta, pero no necesariamente se ejecuta inmediatamente contra la base de datos hasta que se necesita (esto se llama <strong>lazy evaluation</strong> o evaluación perezosa).</p>
+<div align="center" class="mermaid-container">
+<div class="mermaid-title">Funcionamiento de los QuerySet</div>
+<pre class="mermaid"><code>graph TD
+    A[Crear QuerySet] --&gt; B{¿Operación?}
+    B --&gt;|Sí| C[Ejecutar consulta a la DB]
+    B --&gt;|No| D[QuerySet perezoso]
+    C --&gt; E[Devolver resultados]
+    D --&gt; E</code></pre>
+</div>
+
+<p>Antes de profundizar más en el shell de Django y los QuerySets del ORM, debemos crear una aplicación para poder definir un modelo y realizar operaciones en la base de datos.</p>
+<p>Asumiendo que ya en este punto, tienes el proyecto generado siguiendo los pasos anteriores en <a href="#crear-un-nuevo-proyecto">crear un nuevo proyecto</a>, continuamos con la configuración de una aplicación usando el archivo <code>manage.py</code>:</p>
+<div class="highlight"><span class="filename">terminal</span><pre><span></span><code>python<span class="w"> </span>manage.py<span class="w"> </span>startapp<span class="w"> </span>fruits
+</code></pre></div>
+<p>Ahora podemos definir un modelo abriendo el archivo <code>fruits/models.py</code> y definir el siguiente modelo:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Modelo</label><label for="__tabbed_3_2">Explorador</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">fuits/models.py</span><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">django.db</span><span class="w"> </span><span class="kn">import</span> <span class="n">models</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">FruitsInfo</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+    <span class="n">origin</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+    <span class="n">protein</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">max_digits</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">energy</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code> .
+├──  manage.py
+├──  fruits
+│   ├──  __init__.py
+│   ├──  admin.py
+│   ├──  apps.py
+│   ├──  migrations
+│   │   └──  __init__.py
+<span class="hll">│   ├──  models.py
+</span>│   ├──  tests.py
+│   └──  views.py
+└──  mysite
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>Luego debemos abrir el archivo <code>mysite/settings.py</code> y registrar la app generada:</p>
+<div class="admonition tree inline end">
+<p class="admonition-title">Explorador</p>
+<div class="highlight"><pre><span></span><code> .
+├──  manage.py
+├──  myapp
+└──  mysite
+    ├──  __init__.py
+    ├──  asgi.py
+<span class="hll">    ├──  settings.py
+</span>    ├──  urls.py
+    └──  wsgi.py
+</code></pre></div>
+</div>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">settings.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;django.contrib.admin&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.auth&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.contenttypes&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.sessions&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.messages&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.staticfiles&#39;</span><span class="p">,</span>
+<span class="hll">    <span class="s1">&#39;fruits&#39;</span>
+</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+<p>Luego generamos una nueva migración con el comando <code>makemigrations</code> y corremos las migraciones pendientes con el comando <code>migrate</code>:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Comandos</label><label for="__tabbed_4_2">Output</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">Terminal</span><pre><span></span><code>python<span class="w"> </span>manage.py<span class="w"> </span>makemigrations<span class="w"> </span><span class="c1">#(1)!</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>migrate<span class="w"> </span><span class="c1">#(2)!</span>
+</code></pre></div>
+<ol>
+<li>Genera una nueva migración que incluirá al modelo <code>FruitsInfo</code> definido anteriormente.</li>
+<li>Ejecuta las migraciones pendiente y crea las tablas en la base de datos.</li>
+</ol>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="hll">(venv) ➜  django_project python manage.py makemigrations
+</span>Migrations for &#39;fruits&#39;:
+    fruits/migrations/0001_initial.py
+        - Create model FruitsInfo
+<span class="hll">(venv) ➜ django_project python manage.py makemigrations
+</span>Operations to perform:
+    Apply all migrations: admin, auth, contenttypes, fruits, sessions
+Running migrations:
+    Applying contenttypes.0001_initial... OK
+    Applying auth.0001_initial... OK
+    Applying admin.0001_initial... OK
+    Applying admin.0002_logentry_remove_auto_add... OK
+    Applying admin.0003_logentry_add_action_flag_choices... OK
+    Applying contenttypes.0002_remove_content_type_name... OK
+    Applying auth.0002_alter_permission_name_max_length... OK
+    Applying auth.0003_alter_user_email_max_length... OK
+    Applying auth.0004_alter_user_username_opts... OK
+    Applying auth.0005_alter_user_last_login_null... OK
+    Applying auth.0006_require_contenttypes_0002... OK
+    Applying auth.0007_alter_validators_add_error_messages... OK
+    Applying auth.0008_alter_user_username_max_length... OK
+    Applying auth.0009_alter_user_last_name_max_length... OK
+    Applying auth.0010_alter_group_name_max_length... OK
+    Applying auth.0011_update_proxy_permissions... OK
+    Applying auth.0012_alter_user_first_name_max_length... OK
+    Applying fruits.0001_initial... OK
+    Applying sessions.0001_initial... OK
+(venv) ➜ django_project
+</code></pre></div>
+</div>
+</div>
+</div>
+<h2 id="operaciones-orm-en-el-shell"><strong>Operaciones ORM en el shell</strong></h2>
+<p>Ahora para comenzar a realizar operaciones, vamos a ingresar al shell como lo vimos anteriormente:</p>
+<div class="highlight"><span class="filename">terminal</span><pre><span></span><code>python<span class="w"> </span>manage.py<span class="w"> </span>shell
+</code></pre></div>
+<h3 id="insertar">Insertar <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.75 1h10.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 13.25 15H2.75A1.75 1.75 0 0 1 1 13.25V2.75C1 1.784 1.784 1 2.75 1m10.5 1.5H2.75a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25M8 4a.75.75 0 0 1 .75.75v2.5h2.5a.75.75 0 0 1 0 1.5h-2.5v2.5a.75.75 0 0 1-1.5 0v-2.5h-2.5a.75.75 0 0 1 0-1.5h2.5v-2.5A.75.75 0 0 1 8 4"/></svg></span></h3>
+<p>En Django, una clase modelo representa una tabla de base de datos y una instancia de esa clase representa un registro particular dentro de la base de datos. Esto es análogo a usar una sentencia <a href="https://en.wikipedia.org/wiki/Insert_(SQL)"><code>INSERT</code> en SQL</a>.</p>
+<h4 id="metodo-save">método save()</h4>
+<p>Se puede crear un registro simplemente instanciando la clase definida en el modelo usando los argumentos de palabras claves, luego debemos llamar al método <code>save()</code> y así confirmar el nuevo registro en la base de datos.</p>
+<p>En el siguiente ejemplo, veremos que sencillo es agregar un nuevo registro a la clase del modelo:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:3"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><input id="__tabbed_5_3" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215m-6.56 0a.75.75 0 0 1 1.042.018.75.75 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"/></svg></span> python</label><label for="__tabbed_5_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell python</label><label for="__tabbed_5_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell ipython</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fruits.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">FruitsInfo</span> <span class="c1">#(1)!</span>
+<span class="n">record</span> <span class="o">=</span> <span class="n">FruitsInfo</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;banana&quot;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;USA&quot;</span><span class="p">,</span> <span class="n">protein</span><span class="o">=</span><span class="mf">1.09</span><span class="p">,</span> <span class="n">energy</span><span class="o">=</span><span class="mi">371</span><span class="p">)</span> <span class="c1">#(2)!</span>
+<span class="hll"><span class="n">record</span><span class="o">.</span><span class="n">save</span><span class="p">()</span> <span class="c1"># (3)!</span>
+</span></code></pre></div>
+<ol>
+<li>Importamos la clase del modelo</li>
+<li>Instanciamos la clase y la almacenamos en una variable</li>
+<li>invocamos al método <code>save()</code> para insertar en la base de datos</li>
+</ol>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>(InteractiveConsole)
+&gt;&gt;&gt; from fruits.models import FruitsInfo
+&gt;&gt;&gt; record = record = FruitsInfo(name=&quot;banana&quot;, origin=&quot;USA&quot;, protein=1.09, energy=371)
+&gt;&gt;&gt; record.save()
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>In [1]: from fruits.models import FruitsInfo
+In [2]: record = FruitsInfo(name=&quot;banana&quot;, origin=&quot;USA&quot;, protein=1.09, energy=371)
+In [3]: record.save()
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Nota</p>
+<p>Si no recibimos mensajes de errores indicados en la consola de Django, podemos suponer que el registro se agregó correctamente</p>
+</div>
+<h4 id="metodo-create">método create()</h4>
+<p>Otra forma de insertar un registro en una clase modelo es usar el método <code>create()</code>. Esto elimina la necesidad de llamar al método <code>save()</code> para confirmar el registro en la base de datos. El siguiente ejemplo muestra su uso:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:3"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><input id="__tabbed_6_3" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215m-6.56 0a.75.75 0 0 1 1.042.018.75.75 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"/></svg></span> python</label><label for="__tabbed_6_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell python</label><label for="__tabbed_6_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell ipython</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fruits.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">FruitsInfo</span>
+<span class="hll"><span class="n">FruitsInfo</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;USA&quot;</span><span class="p">,</span> <span class="n">protein</span><span class="o">=</span><span class="mf">0.26</span><span class="p">,</span> <span class="n">energy</span><span class="o">=</span><span class="mi">218</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>(InteractiveConsole)
+&gt;&gt;&gt; from fruits.models import FruitsInfo
+&gt;&gt;&gt; FruitsInfo.objects.create(name=&quot;apple&quot;, origin=&quot;USA&quot;, protein=0.26, energy=218)
+&gt;&gt;&gt; &lt;FruitsInfo: USA apple&gt;
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>In [1]: from fruits.models import FruitsInfo
+In [2]: FruitsInfo(name=&quot;banana&quot;, origin=&quot;USA&quot;, protein=1.09, energy=371)
+Out[2]: &lt;FruitsInfo: USA apple&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<details class="info" open="open">
+<summary>Info</summary>
+<p>Si observamos el resultado en el shell, el método <code>create()</code> nos retorna un <strong>QuerySet</strong> con el objeto que acabamos de insertar.</p>
+</details>
+<h3 id="insertar-multiples-registros">Insertar múltiples registros</h3>
+<p>Ahora veremos cómo insertar varios registros en una clase específica. Creamos una nueva clase <code>FruitsVendor</code> dentro de <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M4 1.75C4 .784 4.784 0 5.75 0h5.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v8.586A1.75 1.75 0 0 1 14.25 15h-9a.75.75 0 0 1 0-1.5h9a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 10 4.25V1.5H5.75a.25.25 0 0 0-.25.25v2.5a.75.75 0 0 1-1.5 0Zm1.72 4.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734l1.47-1.47-1.47-1.47a.75.75 0 0 1 0-1.06M3.28 7.78 1.81 9.25l1.47 1.47a.75.75 0 0 1-.018 1.042.75.75 0 0 1-1.042.018l-2-2a.75.75 0 0 1 0-1.06l2-2a.75.75 0 0 1 1.042.018.75.75 0 0 1 .018 1.042m8.22-6.218V4.25c0 .138.112.25.25.25h2.688l-.011-.013-2.914-2.914z"/></svg></span> <code>models.py</code> en la aplicación:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="__tabbed_7_1">Modelo</label><label for="__tabbed_7_2">Explorador</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">fruits/models.py</span><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">FruitsVendors</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="n">vendor_id</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">vendor_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+    <span class="n">vendor_location</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">vendor_id</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">vendor_name</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">vendor_location</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code> .
+├──  manage.py
+├──  fruits
+│   ├──  __init__.py
+│   ├──  admin.py
+│   ├──  apps.py
+│   ├──  migrations
+│   │   └──  __init__.py
+<span class="hll">│   ├──  models.py
+</span>│   ├──  tests.py
+│   └──  views.py
+└──  mysite
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>En la nueva clase <code>FruitsVendors</code>, hemos definido un campo con llave primaria llamado <code>vendor_id</code>. Luego, definimos el método <code>__str__()</code> para mostrar todos los datos dentro de la clase en una cadena con formato.</p>
+<p>Generamos una nueva migración y las ejecutamos con el comando <code>migrate</code>:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="8:2"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><input id="__tabbed_8_2" name="__tabbed_8" type="radio" /><div class="tabbed-labels"><label for="__tabbed_8_1">bash</label><label for="__tabbed_8_2">output</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>manage.py<span class="w"> </span>makemigrations
+python<span class="w"> </span>manage.py<span class="w"> </span>migrate
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>Migrations for &#39;fruits&#39;:
+fruits/migrations/0002_fruitsvendor.py
+    - Create model FruitsVendor
+Operations to perform:
+Apply all migrations: admin, auth, contenttypes, fruits, sessions
+Running migrations:
+Applying fruits.0002_fruitsvendor... OK
+</code></pre></div>
+</div>
+</div>
+</div>
+<h4 id="metodo-bulk_create">método bulk_create()</h4>
+<p>Ahora podemos volver al shell e insertar múltiples registros en la clase <code>FluitsVendors</code> a la vez usando el método <code>bulk_create()</code>. El siguiente ejemplo muestra su uso:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="9:3"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio" /><input id="__tabbed_9_2" name="__tabbed_9" type="radio" /><input id="__tabbed_9_3" name="__tabbed_9" type="radio" /><div class="tabbed-labels"><label for="__tabbed_9_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215m-6.56 0a.75.75 0 0 1 1.042.018.75.75 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"/></svg></span> python</label><label for="__tabbed_9_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell python</label><label for="__tabbed_9_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell ipython</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fruits.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">FruitsVendors</span>
+<span class="n">FruitsVendors</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">bulk_create</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">FruitsVendors</span><span class="p">(</span><span class="n">vendor_id</span><span class="o">=</span><span class="s2">&quot;V001&quot;</span><span class="p">,</span> <span class="n">vendor_name</span><span class="o">=</span><span class="s2">&quot;Fresh Fruits&quot;</span><span class="p">,</span> <span class="n">vendor_location</span> <span class="o">=</span> <span class="s2">&quot;New York&quot;</span><span class="p">),</span>
+        <span class="n">FruitsVendors</span><span class="p">(</span><span class="n">vendor_id</span><span class="o">=</span><span class="s2">&quot;V002&quot;</span><span class="p">,</span> <span class="n">vendor_name</span><span class="o">=</span><span class="s2">&quot;Direct Delivery&quot;</span><span class="p">,</span> <span class="n">vendor_location</span> <span class="o">=</span> <span class="s2">&quot;Sao Paulo&quot;</span><span class="p">),</span>
+        <span class="n">FruitsVendors</span><span class="p">(</span><span class="n">vendor_id</span><span class="o">=</span><span class="s2">&quot;V003&quot;</span><span class="p">,</span> <span class="n">vendor_name</span><span class="o">=</span><span class="s2">&quot;Fruit Mate&quot;</span><span class="p">,</span> <span class="n">vendor_location</span> <span class="o">=</span> <span class="s2">&quot;Sydney&quot;</span><span class="p">)</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>(InteractiveConsole)
+&gt;&gt;&gt; from fruits.models import FruitsVendors
+&gt;&gt;&gt; FruitsVendors.objects.bulk_create(
+...     [
+...         FruitsVendors(vendor_id=&quot;V001&quot;, vendor_name=&quot;Fresh Fruits&quot;, vendor_location = &quot;New York&quot;),
+...         FruitsVendors(vendor_id=&quot;V002&quot;, vendor_name=&quot;Direct Delivery&quot;, vendor_location = &quot;Sao Paulo&quot;),
+...         FruitsVendors(vendor_id=&quot;V003&quot;, vendor_name=&quot;Fruit Mate&quot;, vendor_location = &quot;Sydney&quot;)
+...     ]
+... )
+[&lt;FruitsVendors: FruitsVendors object (V001)&gt;,
+ &lt;FruitsVendors: FruitsVendors object (V002)&gt;,
+ &lt;FruitsVendors: FruitsVendors object (V003)&gt;]
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>In [1]: from fruits.models import FruitsVendors
+   ...: FruitsVendors.objects.bulk_create(
+   ...:     [
+   ...:         FruitsVendors(vendor_id=&quot;V001&quot;, vendor_name=&quot;Fresh Fruits&quot;, vendor_location = &quot;New York&quot;),
+   ...:         FruitsVendors(vendor_id=&quot;V002&quot;, vendor_name=&quot;Direct Delivery&quot;, vendor_location = &quot;Sao Paulo&quot;),
+   ...:         FruitsVendors(vendor_id=&quot;V003&quot;, vendor_name=&quot;Fruit Mate&quot;, vendor_location=&quot;Sydney&quot;)
+   ...:     ]
+   ...: )
+Out[1]:
+[&lt;FruitsVendors: FruitsVendors object (V001)&gt;,
+ &lt;FruitsVendors: FruitsVendors object (V002)&gt;,
+ &lt;FruitsVendors: FruitsVendors object (V003)&gt;]
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>Ahora que ya hemos guardado objetos en la base de datos, vamos a continuar con la operación de obtener esos registros.</p>
+<h3 id="listar">Listar <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M5.75 2.5h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1 0-1.5m0 5h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1 0-1.5m0 5h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1 0-1.5M2 14a1 1 0 1 1 0-2 1 1 0 0 1 0 2m1-6a1 1 0 1 1-2 0 1 1 0 0 1 2 0M2 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2"/></svg></span></h3>
+<h4 id="metodo-all">método all()</h4>
+<p>Verificaremos esto utilizando el método <code>all()</code> que nos retorna un QuerySet que describe todos los objetos de la tabla en la base de datos:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="10:3"><input checked="checked" id="__tabbed_10_1" name="__tabbed_10" type="radio" /><input id="__tabbed_10_2" name="__tabbed_10" type="radio" /><input id="__tabbed_10_3" name="__tabbed_10" type="radio" /><div class="tabbed-labels"><label for="__tabbed_10_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215m-6.56 0a.75.75 0 0 1 1.042.018.75.75 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"/></svg></span> python</label><label for="__tabbed_10_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell python</label><label for="__tabbed_10_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell ipython</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fruits.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">FruitsVendors</span>
+<span class="hll"><span class="n">FruitsVendors</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>(InteractiveConsole)
+&gt;&gt;&gt; from fruits.models import FruitsVendors
+&gt;&gt;&gt; FruitsVendors.objects.all()
+&lt;QuerySet [&lt;FruitsVendors: V001 - Fresh Fruits - New York&gt;, &lt;FruitsVendors: V002 - Direct Delivery - Sao Paulo&gt;, &lt;FruitsVendors: V003 - Fruit Mate - Sydney&gt;]&gt;
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>In [1]: from fruits.models import FruitsVendors
+In [2]: FruitsVendors.objects.all()
+Out[2]: &lt;QuerySet [&lt;FruitsVendors: V001 - Fresh Fruits - New York&gt;, &lt;FruitsVendors: V002 - Direct Delivery - Sao Paulo&gt;, &lt;FruitsVendors: V003 - Fruit Mate - Sydney&gt;]&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>Debido a que hemos definido un método <code>__str__()</code> para mostrar un objeto en un formato legible para nosotros los humanos 😎, el método <code>all()</code> mostrará solo el valor definido en el método <code>__str__()</code>.</p>
+<p>El método <code>values()</code> permite extraer los valores de un objeto determinado como se muestra a continuación:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="11:3"><input checked="checked" id="__tabbed_11_1" name="__tabbed_11" type="radio" /><input id="__tabbed_11_2" name="__tabbed_11" type="radio" /><input id="__tabbed_11_3" name="__tabbed_11" type="radio" /><div class="tabbed-labels"><label for="__tabbed_11_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215m-6.56 0a.75.75 0 0 1 1.042.018.75.75 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"/></svg></span> python</label><label for="__tabbed_11_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell python</label><label for="__tabbed_11_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell ipython</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="n">FruitsVendors</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>(InteractiveConsole)
+&gt;&gt;&gt; FruitsVendors.objects.all(),values()
+&lt;QuerySet [{&#39;vendor_id&#39;: &#39;V001&#39;, &#39;vendor_name&#39;: &#39;Fresh Fruits&#39;, &#39;vendor_location&#39;: &#39;New York&#39;}, {&#39;vendor_id&#39;: &#39;V002&#39;, &#39;vendor_name&#39;: &#39;Direct Delivery&#39;, &#39;vendor_location&#39;: &#39;Sao Paulo&#39;}, {&#39;vendor_id&#39;: &#39;V003&#39;, &#39;vendor_name&#39;: &#39;Fruit Mate&#39;, &#39;vendor_location&#39;: &#39;Sydney&#39;}]&gt;
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>In [2]: FruitsVendors.objects.all().values()
+Out[2]: &lt;QuerySet [{&#39;vendor_id&#39;: &#39;V001&#39;, &#39;vendor_name&#39;: &#39;Fresh Fruits&#39;, &#39;vendor_location&#39;: &#39;New York&#39;}, {&#39;vendor_id&#39;: &#39;V002&#39;, &#39;vendor_name&#39;: &#39;Direct Delivery&#39;, &#39;vendor_location&#39;: &#39;Sao Paulo&#39;}, {&#39;vendor_id&#39;: &#39;V003&#39;, &#39;vendor_name&#39;: &#39;Fruit Mate&#39;, &#39;vendor_location&#39;: &#39;Sydney&#39;}]&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<h4 id="metodo-get">método get()</h4>
+<p>Si quisieramos recuperar un solo registro, podemos usar el método <code>get()</code>. Sin embargo, si hay más de un registro que coincida con la consulta que especificamos dentro del método <code>get()</code>, esto dará como resultado un error <code>MultipleObjectsReturned</code>.</p>
+<p>El método <code>get()</code> es más viable cuando buscamos utilizando campos con índices únicos, como llave primaria. El siguiente ejemplo muestra el método <code>get()</code> utilizando el campo <strong>id</strong>:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="12:3"><input checked="checked" id="__tabbed_12_1" name="__tabbed_12" type="radio" /><input id="__tabbed_12_2" name="__tabbed_12" type="radio" /><input id="__tabbed_12_3" name="__tabbed_12" type="radio" /><div class="tabbed-labels"><label for="__tabbed_12_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215m-6.56 0a.75.75 0 0 1 1.042.018.75.75 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"/></svg></span> python</label><label for="__tabbed_12_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell python</label><label for="__tabbed_12_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell ipython</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fruits.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">FruitsInfo</span>
+<span class="n">FruitsInfo</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; from fruits.models import FruitsInfo
+&gt;&gt;&gt; FruitsInfo.objects.get(id=2)
+&lt;FruitsInfo: USA apple&gt;
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>In [1]: from fruits.models import FruitsInfo
+In [2]: FruitsInfo.objects.get(id=2)
+Out[2]: &lt;FruitsInfo: USA apple&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="busquedas">Búsquedas <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215ZM11.5 7a4.499 4.499 0 1 0-8.997 0A4.499 4.499 0 0 0 11.5 7"/></svg></span></h3>
+<p>En el ORM de Django, podemos especificar operadores para filtrar un conjunto. Esto es análogo a los operadores que se pueden especificar dentro de una declaración <a href="https://es.wikipedia.org/wiki/SQL#:~:text=Cl%C3%A1usula%20WHERE%20(Donde)"><code>WHERE</code> de SQL</a>. Algunos ejemplos de búsquedas de campos y sus operadores SQL correspondientes son:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">ORM</th>
+<th style="text-align: left;">SQL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>contains</code></td>
+<td style="text-align: left;"><code>LIKE</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>range</code></td>
+<td style="text-align: left;"><code>BETWEEN</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>gte</code> (mayor o igual que)</td>
+<td style="text-align: left;"><code>&gt;=</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>lte</code> (menor o igual que)</td>
+<td style="text-align: left;"><code>&lt;=</code></td>
+</tr>
+</tbody>
+</table>
+<p>Los siguientes ejemplos demuestran cómo podemos utilizar las búsquedas por atributos dentro de Django shell.</p>
+<h4 id="operador-contains">operador - contains</h4>
+<p>Busquemos nombres de proveedores que incluyan la palabra "Fruits" en la clase <code>FruitsVendor</code>:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="13:3"><input checked="checked" id="__tabbed_13_1" name="__tabbed_13" type="radio" /><input id="__tabbed_13_2" name="__tabbed_13" type="radio" /><input id="__tabbed_13_3" name="__tabbed_13" type="radio" /><div class="tabbed-labels"><label for="__tabbed_13_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215m-6.56 0a.75.75 0 0 1 1.042.018.75.75 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"/></svg></span> python</label><label for="__tabbed_13_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell python</label><label for="__tabbed_13_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell ipython</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fruits.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">FruitsVendors</span>
+<span class="n">FruitsVendors</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">vendor_name__contains</span><span class="o">=</span><span class="s2">&quot;Fruit&quot;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; from fruits.models import FruitsVendors
+&gt;&gt;&gt; FruitsVendors.objects.filter(vendor_name__contains=&quot;Fruit&quot;)
+&lt;QuerySet [&lt;FruitsVendor: FruitsVendor object (V001)&gt;, &lt;FruitsVendor: FruitsVendor object (V003)&gt;]
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>In [1]: from fruits.models import FruitsVendors
+In [2]: FruitsVendors.objects.filter(vendor_name__contains=&quot;Fruit&quot;)
+Out[2]: &lt;QuerySet [&lt;FruitsVendors: V001 - Fresh Fruits - New York&gt;, &lt;FruitsVendors: V003 - Fruit Mate - Sydney&gt;]&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<h4 id="operador-gte-y-lte">operador - gte y lte</h4>
+<p>En los siguientes ejemplos, buscaremos registros usando los operadores de mayor y menor que:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="14:3"><input checked="checked" id="__tabbed_14_1" name="__tabbed_14" type="radio" /><input id="__tabbed_14_2" name="__tabbed_14" type="radio" /><input id="__tabbed_14_3" name="__tabbed_14" type="radio" /><div class="tabbed-labels"><label for="__tabbed_14_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215m-6.56 0a.75.75 0 0 1 1.042.018.75.75 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"/></svg></span> python</label><label for="__tabbed_14_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell python</label><label for="__tabbed_14_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell ipython</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fruits.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">FruitsInfo</span>
+<span class="n">FruitsInfo</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">protein__gte</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">FruitsInfo</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">energy__lte</span><span class="o">=</span><span class="mi">250</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; from fruits.models import FruitsInfo
+&gt;&gt;&gt; FruitsInfo.objects.filter(protein__gte=1)
+&lt;QuerySet [&lt;FruitsInfo: USA banana&gt;]&gt;
+&gt;&gt;&gt; FruitsInfo.objects.filter(energy__lte=250)
+&lt;QuerySet [&lt;FruitsInfo: USA apple&gt;]&gt;
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>In [1]: from fruits.models import FruitsInfo
+In [2]: FruitsInfo.objects.filter(protein__gte=1)
+Out[2]: &lt;QuerySet [&lt;FruitsInfo: USA banana&gt;]&gt;
+In [3]: FruitsInfo.objects.filter(energy__lte=250)
+Out[3]: &lt;QuerySet [&lt;FruitsInfo: USA apple&gt;]&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<h4 id="operador-range">operador - range</h4>
+<p>En los siguientes ejemplos, buscaremos registros usando los operadores de range:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="15:3"><input checked="checked" id="__tabbed_15_1" name="__tabbed_15" type="radio" /><input id="__tabbed_15_2" name="__tabbed_15" type="radio" /><input id="__tabbed_15_3" name="__tabbed_15" type="radio" /><div class="tabbed-labels"><label for="__tabbed_15_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215m-6.56 0a.75.75 0 0 1 1.042.018.75.75 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"/></svg></span> python</label><label for="__tabbed_15_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell python</label><label for="__tabbed_15_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell ipython</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fruits.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">FruitsInfo</span>
+<span class="n">FruitsInfo</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">energy__range</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">))</span>
+<span class="n">FruitsInfo</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">energy__range</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">))</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; from fruits.models import FruitsInfo
+&gt;&gt;&gt; FruitsInfo.objects.filter(energy__range=(200, 300))
+&lt;QuerySet [&lt;FruitsInfo: USA apple&gt;]&gt;
+&gt;&gt;&gt; FruitsInfo.objects.filter(energy__range=(200, 400))
+&lt;QuerySet [&lt;FruitsInfo: USA banana&gt;, &lt;FruitsInfo: USA apple&gt;]&gt;
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>In [1]: from fruits.models import FruitsInfo
+In [2]: FruitsInfo.objects.filter(energy__range=(200, 300))
+Out[2]: &lt;QuerySet [&lt;FruitsInfo: USA apple&gt;]&gt;
+In [3]: FruitsInfo.objects.filter(energy__range=(200, 400))
+Out[3]: &lt;QuerySet [&lt;FruitsInfo: USA banana&gt;, &lt;FruitsInfo: USA apple&gt;]&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="actualizar">Actualizar <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.49 5.49 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5"/></svg></span></h3>
+<p>La operación de actualización se puede realizar junto con el método <code>filter()</code> para especificar el registro que se puede actualizar. Actualicemos el atributo <code>origin</code> al registro (<code>id=1</code>) en la tabla <code>FruitsInfo</code>:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="16:3"><input checked="checked" id="__tabbed_16_1" name="__tabbed_16" type="radio" /><input id="__tabbed_16_2" name="__tabbed_16" type="radio" /><input id="__tabbed_16_3" name="__tabbed_16" type="radio" /><div class="tabbed-labels"><label for="__tabbed_16_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215m-6.56 0a.75.75 0 0 1 1.042.018.75.75 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"/></svg></span> python</label><label for="__tabbed_16_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell python</label><label for="__tabbed_16_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> shell ipython</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fruits.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">FruitsInfo</span>
+<span class="n">FruitsInfo</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">origin</span> <span class="c1">#(1)!</span>
+<span class="hll"><span class="n">FruitsInfo</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">origin</span><span class="o">=</span><span class="s1">&#39;australia&#39;</span><span class="p">)</span> <span class="c1">#(2)!</span>
+</span><span class="n">FruitsInfo</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">origin</span> <span class="c1">#(3)!</span>
+</code></pre></div>
+<ol>
+<li>Mostramos el valor actual del atributo origin</li>
+<li>Actualizamos el atributo origin</li>
+<li>Mostramos el valor actualizado del atributo origin</li>
+</ol>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; from fruits.models import FruitsInfo
+&gt;&gt;&gt; FruitsInfo.objects.get(id=1).origin
+&#39;USA&#39;
+&gt;&gt;&gt; FruitsInfo.objects.filter(id=1).update(origin=&#39;australia&#39;)
+1
+&gt;&gt;&gt; FruitsInfo.objects.get(id=1).origin
+&#39;australia&#39;
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>In [1]: from fruits.models import FruitsInfo
+In [2]: FruitsInfo.objects.get(id=1).origin
+Out[2]: &#39;USA&#39;
+In [3]: FruitsInfo.objects.filter(id=1).update(origin=&#39;australia&#39;)
+Out[3]: 1
+In [4]: FruitsInfo.objects.get(id=1).origin
+Out[4]: &#39;australia&#39;
+</code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="eliminar">Eliminar <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></h3>
+<p>El ORM nos ofrece el método <code>delete()</code> para eliminar registros de una clase específica. Esto es análogo a la instrucción <a href="https://en.wikipedia.org/wiki/Delete_(SQL)"><code>DELETE</code> en SQL</a></p>
+<h4 id="eliminar-un-registro">Eliminar un registro</h4>
+<p>Al eliminar un solo registro, debemos utilizar el método <code>get()</code>, ya que devuelve directamente el objeto especificado. En el siguiente ejemplo eliminamos un registro (<code>id=3</code>) de la clase <code>FruitsInfo()</code>:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="17:2"><input checked="checked" id="__tabbed_17_1" name="__tabbed_17" type="radio" /><input id="__tabbed_17_2" name="__tabbed_17" type="radio" /><div class="tabbed-labels"><label for="__tabbed_17_1">Python</label><label for="__tabbed_17_2">Shell</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fruits.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">FruitsInfo</span>
+
+<span class="n">FruitsInfo</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="c1">#(1)!</span>
+<span class="n">FruitsInfo</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span> <span class="c1">#(2)!</span>
+<span class="n">FruitsInfo</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="c1">#(3)!</span>
+</code></pre></div>
+<ol>
+<li>Mostramos todos los objetos</li>
+<li>Eliminamos el objeto</li>
+<li>Mostramos todos los objetos nuevamente</li>
+</ol>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; from fruits.models import FruitsInfo
+&gt;&gt;&gt; FruitsInfo.objects.all().values()
+&lt;QuerySet [&lt;FruitsInfo: australia apple&gt;, &lt;FruitsInfo: USA banana&gt;, &lt;FruitsInfo: USA pineapple&gt;]&gt;
+&gt;&gt;&gt; FruitsInfo.objects.get(id=3).delete()
+(1, {&#39;fruits.FruitsInfo&#39;: 1})
+&gt;&gt;&gt; FruitsInfo.objects.all()
+&lt;QuerySet [&lt;FruitsInfo: australia apple&gt;, &lt;FruitsInfo: USA banana&gt;]&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<h4 id="eliminar-varios-registros">Eliminar varios registros</h4>
+<p>El método <code>delete()</code> se puede utilizar para eliminar todos los registros de una clase determinada, simplemente especificando la operación de eliminación con el método <code>all()</code> para eliminar todos o <code>filter()</code> para eliminar un conjunto que cumpla una determinada condición. En el siguiente ejemplo, eliminaremos todos los registros:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="18:2"><input checked="checked" id="__tabbed_18_1" name="__tabbed_18" type="radio" /><input id="__tabbed_18_2" name="__tabbed_18" type="radio" /><div class="tabbed-labels"><label for="__tabbed_18_1">Python</label><label for="__tabbed_18_2">Shell</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fruits.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">FruitsInfo</span>
+
+<span class="n">FruitsInfo</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="c1">#(1)!</span>
+<span class="n">FruitsInfo</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span> <span class="c1">#(2)!</span>
+<span class="n">FruitsInfo</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="c1">#(3)!</span>
+</code></pre></div>
+<ol>
+<li>Mostramos todos los objetos</li>
+<li>Eliminamos todos los objetos</li>
+<li>Comprobamos, mostrando todos los objetos</li>
+</ol>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&gt;&gt;&gt; from fruits.models import FruitsInfo
+&gt;&gt;&gt; FruitsInfo.objects.all()
+&lt;QuerySet [&lt;FruitsInfo: australia apple&gt;, &lt;FruitsInfo: USA banana&gt;]&gt;
+&gt;&gt;&gt; FruitsInfo.objects.all().delete()
+(2, {&#39;fruits.FruitsInfo&#39;: 2})
+&gt;&gt;&gt; FruitsInfo.objects.all()
+&lt;QuerySet []&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+        
+      
+      <nav class="md-footer__inner md-grid" aria-label="Pie" >
+        
+          
+          <a href="../desplegar-django-en-flyio/" class="md-footer__link md-footer__link--prev" aria-label="Anterior: Desplegar Django en Fly.io">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Anterior
+              </span>
+              <div class="md-ellipsis">
+                Desplegar Django en Fly.io
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../personalizar-el-panel-administrativo-de-django/" class="md-footer__link md-footer__link--next" aria-label="Siguiente: Personalizar el Panel Administrativo de Django">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Siguiente
+              </span>
+              <div class="md-ellipsis">
+                Personalizar el Panel Administrativo de Django
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 @mcherrera
+    </div>
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/enidev911" target="_blank" rel="noopener" title="enidev911" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="mailto:contacto@mcherrera.dev" target="_blank" rel="noopener" title="contacto" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 4H7a5 5 0 0 0-5 5v11h18a2 2 0 0 0 2-2V9a5 5 0 0 0-5-5m-7 14H4V9a3 3 0 0 1 3-3 3 3 0 0 1 3 3zm9-3h-2v-2h-4v-2h6zM9 11H5V9h4z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.prune", "navigation.top", "navigation.tracking", "toc.follow", "navigation.sections", "navigation.expand", "navigation.footer", "content.code.copy", "content.code.select", "content.code.annotate", "content.tooltips", "content.action.edit", "content.action.view"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f1b6f286.min.js"></script>
+      
+        <script src="../../scripts/hello_word.js"></script>
+      
+    
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "fade", "closeEffect": "fade", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
+</html>

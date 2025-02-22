@@ -1,0 +1,1169 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../shell-de-django-orm-y-querysets/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.5">
+    
+    
+      
+        <title>Personalizar el Panel Administrativo de Django - Django doc</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.8608ea7d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CNerd:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Nerd"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/fontawesome.css">
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#prepararando-el-escenario" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Django doc" class="md-header__button md-logo" aria-label="Django doc" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Django doc
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Personalizar el Panel Administrativo de Django
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../configurar-entorno-virtual/" class="md-tabs__link">
+          
+  
+  Comenzar
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="../" class="md-tabs__link">
+        
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Django doc" class="md-nav__button md-logo" aria-label="Django doc" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Django doc
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../configurar-entorno-virtual/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Comenzar
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prepararando-el-escenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prepararando el Escenario
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prepararando el Escenario">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-crear-un-nuevo-directorio-para-el-proyecto" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Crear un nuevo directorio para el proyecto
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-crear-un-entorno-virtual" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Crear un entorno virtual
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-activar-entorno-virtual" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Activar entorno virtual
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-instalar-django" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Instalar Django
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-generar-un-nuevo-proyecto-de-django" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Generar un nuevo proyecto de django
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configurar-el-panel-administrativo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configurar el Panel Administrativo
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configurar el Panel Administrativo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-ejecutar-migraciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Ejecutar Migraciones
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-crear-un-superusuario" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Crear un superusuario
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-iniciar-el-servidor" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Iniciar el servidor
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acceder-al-panel-de-administracion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Acceder al Panel de Administración
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#personalizacion-basica" class="md-nav__link">
+    <span class="md-ellipsis">
+      Personalización Básica
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Personalización Básica">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-cambiar-el-idioma-del-panel-administrativo" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Cambiar el Idioma del Panel Administrativo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-personalizar-el-titulo-del-panel-administrativo" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Personalizar el título del panel administrativo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-personalizar-la-paleta-de-colores-y-estilos-con-css" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Personalizar la paleta de colores y estilos con CSS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Personalizar la paleta de colores y estilos con CSS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-configurar-los-archivos-estaticos" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Configurar los archivos estáticos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2crear-y-editar-un-archivo-css-personalizado" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.Crear y editar un archivo CSS personalizado
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-sobrescribir-la-plantilla-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Sobrescribir la Plantilla Base
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usar-temas-de-tercero" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usar Temas de Tercero
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usar Temas de Tercero">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#que-es-django-admin-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      ¿Qué es django-admin-interface?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="¿Qué es django-admin-interface?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-1-instalar-el-paquete-django-admin-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 1: Instalar el paquete django-admin-interface
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-2-agregar-el-paquete-a-la-lista-de-aplicaciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 2: Agregar el paquete a la lista de aplicaciones
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-3-ejecutar-migraciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 3: Ejecutar migraciones
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-4-sobrescribir-base_sitehtml-opcional" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 4: Sobrescribir base_site.html (Opcional)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#formularios-personalizados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Formularios Personalizados
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Regresar al índice
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2024-08-14 00:00:00+00:00" class="md-ellipsis">14/8/24</time>
+                      </div>
+                    </li>
+                    
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              9 minutos de lectura
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+        <span class="md-tag">admin</span>
+      
+    
+      
+      
+      
+        <span class="md-tag">customizar</span>
+      
+    
+  </nav>
+
+
+
+  <h1>Personalizar el Panel Administrativo de Django</h1>
+
+<p>Django es conocido por su rapidez en el desarrollo y su potente sistema de administración listo para usarse. Desde el momento en que creas un nuevo proyecto con Django, el panel de administración se configura automáticamente, ofreciendo una interfaz para gestionar modelos, usuarios, permisos y mucho más. Sin embargo, es común que, a medida que avanzamos en el desarrollo de nuestra aplicación, necesitemos personalizar este panel para adaptarlo a las necesidades específicas de nuestro proyecto. Afortunadamente, Django facilita esta personalización tanto en términos de apariencia como de funcionalidad.</p>
+<!-- more -->
+
+<h2 id="prepararando-el-escenario"><strong>Prepararando el Escenario</strong></h2>
+<p>Antes de acceder al panel administrativo, debemos contar con un proyecto de Django. Para ello debemos seguir los siguientes pasos:</p>
+<h3 id="1-crear-un-nuevo-directorio-para-el-proyecto"><strong>1. Crear un nuevo directorio para el proyecto</strong></h3>
+<p>Elige un destino para tu proyecto y luego crea un nuevo directorio con el nombre para el proyecto:</p>
+<div class="highlight"><span class="filename">terminal</span><pre><span></span><code>mkdir<span class="w"> </span>custom-admin-django<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>custom-admin-django
+</code></pre></div>
+<details class="info" open="open">
+<summary>Info</summary>
+<p>Modifica el nombre por el que desees, el comando anterior simplemente está creando un nuevo directorio y entrando en ese directorio a la vez. En distribuciones basadas en Linux, el comando anterior se puede abreviar con <code>take custom-admin-django</code></p>
+</details>
+<h3 id="2-crear-un-entorno-virtual"><strong>2. Crear un entorno virtual</strong></h3>
+<p>Existen muchas maneras de crear entornos virtuales, para efectos prácticos haremos uso del paquete <strong>venv</strong> incluido en la mayoría de instalaciones de Python:</p>
+<div class="highlight"><span class="filename">terminal</span><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+</code></pre></div>
+<h3 id="3-activar-entorno-virtual"><strong>3. Activar entorno virtual</strong></h3>
+<p>Una vez se crea el entorno virtual, observarás que se creó una nueva carpeta con el nombre de <strong>venv</strong> y dentro se encuentra una instalación limpia de Python que tenemos que activar para empezar a instalar los paquetes. Para ello debemos ejecutar el comando que corresponda según el sistema operativo que utilices:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> Linux, macOS</label><label for="__tabbed_1_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.75.75 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53m1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5"/></svg></span> Windows</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>venv/bin/activate
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>.venv\Scripts\activate
+</code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="4-instalar-django"><strong>4. Instalar Django</strong></h3>
+<p>Ahora que ya tenemos el entorno virtual creado y activado, podemos instalar django usando pip:</p>
+<div class="highlight"><span class="filename">terminal</span><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>django
+</code></pre></div>
+<h3 id="5-generar-un-nuevo-proyecto-de-django"><strong>5. Generar un nuevo proyecto de django</strong></h3>
+<p>Una vez instalado django, procedemos a generar un nuevo proyecto en el directorio actual:</p>
+<div class="highlight"><span class="filename">terminal</span><pre><span></span><code>django-admin<span class="w"> </span>startproject<span class="w"> </span>_site<span class="w"> </span>.
+</code></pre></div>
+<h2 id="configurar-el-panel-administrativo"><strong>Configurar el Panel Administrativo</strong></h2>
+<p>Una vez que hayas creado tu proyecto, Django ya incluye un panel administrativo listo para usarse, pero para poder acceder a él debes asegurarte de haber realizado algunos pasos previos:</p>
+<h3 id="1-ejecutar-migraciones"><strong>1. Ejecutar Migraciones</strong></h3>
+<div class="highlight"><span class="filename">terminal</span><pre><span></span><code>python<span class="w"> </span>manage.py<span class="w"> </span>migrate
+</code></pre></div>
+<h3 id="2-crear-un-superusuario"><strong>2. Crear un superusuario</strong></h3>
+<p>El superusuario es el usuario con privilegios administrativos que podrás utilizar para iniciar sesión en el panel. Para crear uno, ejecuta el siguiente comando:</p>
+<div class="highlight"><span class="filename">terminal</span><pre><span></span><code>python<span class="w"> </span>manage.py<span class="w"> </span>createsuperuser
+</code></pre></div>
+<h3 id="3-iniciar-el-servidor"><strong>3. Iniciar el servidor</strong></h3>
+<p>Ahora debemos ejecutar el servidor de desarrollo con el comando <code>python manage.py runserver</code>:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Comando</label><label for="__tabbed_2_2">Salida</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">terminal</span><pre><span></span><code>python<span class="w"> </span>manage.py<span class="w"> </span>runserver<span class="w"> </span><span class="m">8080</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="hll">$ python manage.py runserver 8080
+</span>Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 18 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, contenttypes, sessions.
+Run &#39;python manage.py migrate&#39; to apply them.
+January 09, 2025 - 23:41:14
+Django version 5.1.4, using settings &#39;_site.settings&#39;
+<span class="hll">Starting development server at http://127.0.0.1:8080/
+</span>Quit the server with CONTROL-C.
+</code></pre></div>
+</div>
+</div>
+</div>
+<details class="info" open="open">
+<summary>Info</summary>
+<p>El comando anterior lanza el servidor de desarrollo en el puerto 8080.</p>
+</details>
+<h2 id="acceder-al-panel-de-administracion"><strong>Acceder al Panel de Administración</strong></h2>
+<p>Una vez que el servidor esté en funcionamiento, puedes abrir la URL <a href="http://127.0.0.1:8080/">http://127.0.0.1:8080/</a> y se mostrará la página predeterminada de Django:</p>
+<p><a class="glightbox" href="https://enidev911.github.io/doc_django/assets/images/django-project-start.webp" data-type="image" data-width="auto" data-height="auto" data-title="Página por defecto de Django" data-desc-position="bottom"><img alt="Página por defecto de Django" class="bordered-image" src="https://enidev911.github.io/doc_django/assets/images/django-project-start.webp" /></a></p>
+<p>Sin realizar ningún otro paso, podemos acceder a <a href="http://127.0.0.1:8080/admin">http://127.0.0.1:8080/admin</a> y se mostrará la página de iniciar sesión del panel de administración:</p>
+<p><a class="glightbox" href="https://enidev911.github.io/doc_django/assets/images/django-admin-login.webp" data-type="image" data-width="auto" data-height="auto" data-title="Página de login de Django admin" data-desc-position="bottom"><img alt="Página de login de Django admin" class="bordered-image" src="https://enidev911.github.io/doc_django/assets/images/django-admin-login.webp" /></a></p>
+<p>Esto se debe a que un proyecto creado con el comando <code>startproject</code> ya viene correctamente configurado y tiene habilitado el panel administrativo. Esto implica que las aplicaciones <code>django.contrib.admin</code>, <code>django.contrib.auth</code> y <code>django.contrib.contenttypes</code> están habilitadas por defecto en el archivo <code>settings.py</code>:</p>
+<div class="highlight"><span class="filename">settings.py</span><pre><span></span><code><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;django.contrib.admin&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.auth&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.contenttypes&#39;</span><span class="p">,</span>
+    <span class="c1"># Otras aplicaciones</span>
+<span class="p">]</span>
+</code></pre></div>
+<p>Y también vienen ya configurada las URLs de administración en el archivo <code>urls.py</code> en el proyecto:</p>
+<div class="highlight"><span class="filename">urls.py</span><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib</span><span class="w"> </span><span class="kn">import</span> <span class="n">admin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.urls</span><span class="w"> </span><span class="kn">import</span> <span class="n">path</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+<span class="hll">    <span class="n">path</span><span class="p">(</span><span class="s1">&#39;admin/&#39;</span><span class="p">,</span> <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">urls</span><span class="p">),</span>
+</span><span class="p">]</span>
+</code></pre></div>
+<p>Ahora podemos acceder al panel administrativo iniciando sesión con el superusuario. Al hacerlo, se nos mostrará la siguiente interfaz:</p>
+<p><a class="glightbox" href="https://enidev911.github.io/doc_django/assets/images/django-admin-login-success.png" data-type="image" data-width="auto" data-height="auto" data-title="Página de login de Django admin" data-desc-position="bottom"><img alt="Página de login de Django admin" class="bordered-image" src="https://enidev911.github.io/doc_django/assets/images/django-admin-login-success.png" /></a></p>
+<p>De forma predeterminada, Django incluye los modelos <strong>Users</strong> y <strong>Groups</strong> como parte de su sistema de autenticación y autorización. Estos modelos están definidos en la aplicación <code>django.contrib.auth</code>, que es una de las aplicaciones incluidas de forma predeterminada en la configuración de Django.</p>
+<h2 id="personalizacion-basica"><strong>Personalización Básica</strong></h2>
+<h3 id="1-cambiar-el-idioma-del-panel-administrativo"><strong>1. Cambiar el Idioma del Panel Administrativo</strong></h3>
+<p>Django viene con soporte para múltiples idiomas. En nuestro caso si deseamos cambiar el idioma del panel administrativo al español, debemos realizar los siguientes pasos:</p>
+<ol>
+<li><strong>Abrir el archivo <code>_site/settings.py</code></strong>.</li>
+<li><strong>Configurar el idioma</strong>. En el archivo settings.py, encontrarás la opción <code>LANGUAGE_CODE</code>. Aquí puedes especificar el idioma que deseas utilizar en el panel administrativo.</li>
+</ol>
+<p>Por ejemplo, para cambiar el idioma a <strong>español (Chile)</strong>, debes establecer <code>LANGUAGE_CODE</code> a <code>'es-cl'</code>:</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">settings.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">106</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s1">&#39;es-cl&#39;</span>
+</code></pre></div></td></tr></table></div>
+<p>Ahora, cuando accedes al panel administrativo, deberías ver todos los textos traducidos al idioma que has configurado. Esto incluye todas las etiquetas de los formularios, menús y otros elementos del panel.</p>
+<p><a class="glightbox" href="https://enidev911.github.io/doc_django/assets/images/django-admin-es-cl.webp" data-type="image" data-width="auto" data-height="auto" data-title="Panel administrativo, en español" data-desc-position="bottom"><img alt="Panel administrativo, en español" class="bordered-image" src="https://enidev911.github.io/doc_django/assets/images/django-admin-es-cl.webp" /></a></p>
+<h3 id="2-personalizar-el-titulo-del-panel-administrativo"><strong>2. Personalizar el título del panel administrativo</strong></h3>
+<p>Puedes cambiar el título del panel administrativo (que aparece en la parte superior) para que coincida con el nombre de tu proyecto o tu marca. Esto se puede hacer editado el archivo <code>_site/urls.py</code> o en un archivo de configuración similar, utilizando las propiedades e <code>admin.site</code>:</p>
+<div class="highlight"><span class="filename">urls.py</span><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib</span><span class="w"> </span><span class="kn">import</span> <span class="n">admin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.urls</span><span class="w"> </span><span class="kn">import</span> <span class="n">path</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">&#39;admin/&#39;</span><span class="p">,</span> <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">urls</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="hll"><span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">site_header</span> <span class="o">=</span> <span class="s2">&quot;Mi sitio web&quot;</span> <span class="c1"># (1)!</span>
+</span><span class="hll"><span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">site_title</span> <span class="o">=</span> <span class="s2">&quot;Portal de mi web&quot;</span> <span class="c1"># (2)!</span>
+</span><span class="hll"><span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">index_title</span> <span class="o">=</span> <span class="s2">&quot;Bienvenidos al portal de administración&quot;</span> <span class="c1"># (3)!</span>
+</span></code></pre></div>
+<ol>
+<li><code>site_header</code>: Título en la parte superior del panel de administración.</li>
+<li><code>site_title</code>: Título en la pestaña del navegador.</li>
+<li><code>index_title</code>: Título en la página principal del panel administrativo.</li>
+</ol>
+<div class="admonition info">
+<p>No es necesario tocar las plantillas ni hacer ninguna otra modificación, y todo debería funcionar correctamente con estos cambios.</p>
+</div>
+<p><a class="glightbox" href="https://enidev911.github.io/doc_django/assets/images/django-admin-set-titles.webp" data-type="image" data-width="auto" data-height="auto" data-title="Panel administrativo, personalizar títulos" data-desc-position="bottom"><img alt="Panel administrativo, personalizar títulos" class="bordered-image" src="https://enidev911.github.io/doc_django/assets/images/django-admin-set-titles.webp" /></a></p>
+<h3 id="3-personalizar-la-paleta-de-colores-y-estilos-con-css"><strong>3. Personalizar la paleta de colores y estilos con CSS</strong></h3>
+<p>Aunque el panel de administración de Django es funcional desde el principio, su apariencia es bastante simple. Si deseas darle un toque más personalizado, puedes hacerlo de varias maneras, desde cambiar los estilos CSS hasta usar un tema de terceros.</p>
+<p>Para cambiar estilos con CSS personalizado, sigue estos pasos:</p>
+<h4 id="1-configurar-los-archivos-estaticos"><strong>1. Configurar los archivos estáticos</strong></h4>
+<p>Django proporciona configuraciones específicas para gestionar los archivos estáticos. Vamos a configurarlos correctamente. En el archivo <code>_site/settings.py</code>, asegúrate de tener las siguientes configuraciones para los archivos estáticos:</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">setting.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Directorio donde se encuentran los archivos estáticos en desarrollo</span>
+<span class="n">STATIC_URL</span> <span class="o">=</span> <span class="s1">&#39;/static/&#39;</span>
+
+<span class="c1"># En desarrollo, Django sirve archivos estáticos desde la carpeta definida aquí</span>
+<span class="n">STATICFILES_DIRS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">BASE_DIR</span> <span class="o">/</span> <span class="s1">&#39;static&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># Carpeta en la que se almacenarán los archivos estáticos en producción</span>
+<span class="n">STATIC_ROOT</span> <span class="o">=</span> <span class="n">BASE_DIR</span> <span class="o">/</span> <span class="s1">&#39;staticfiles&#39;</span>
+
+<span class="c1"># en producción se utiliza el comando `python manage.py collectstatic` para recopilar todos los archivos estáticos.</span>
+</code></pre></div></td></tr></table></div>
+<h4 id="2crear-y-editar-un-archivo-css-personalizado"><strong>2.Crear y editar un archivo CSS personalizado</strong></h4>
+<p>Crea un archivo CSS en el directorio estático de tu proyecto, en nuestro caso en la raíz en un directorio <code>static/css/custom_admin.css</code>. Dentro de este archivo, puedes añadir los estilos que desees para modificar la apariencia del panel. Ejemplo:</p>
+<div class="highlight"><span class="filename">custom_admin.css</span><pre><span></span><code><span class="nt">body</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="mh">#f4f4f4</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">#</span><span class="nn">content-main</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="mh">#fff</span><span class="p">;</span>
+<span class="w">    </span><span class="k">border-radius</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="kt">px</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Para identificar los elementos específicos que desees manipular, abre las <strong>devtools</strong> del navegador y juega con el selector:</p>
+<p><a class="glightbox" href="https://enidev911.github.io/doc_django/assets/images/django-admin-devtools-css.webp" data-type="image" data-width="auto" data-height="auto" data-title="devtools del navegador, para identificar los elementos del panel administrativo" data-desc-position="bottom"><img alt="devtools del navegador, para identificar los elementos del panel administrativo" class="bordered-image" src="https://enidev911.github.io/doc_django/assets/images/django-admin-devtools-css.webp" /></a></p>
+<p>El panel administrativo de Django utiliza <strong>variables CSS</strong> personalizables para definir una serie de colores y estilos generales. Gracias a esto, puedes sobrescribir los colores del panel de administración sin tener que modificar todo el CSS. Para ver las variables que usa Django, puedes abrir nuevamente las <strong>devtools</strong> del navegador, pero ahora en la pestaña <strong>Source</strong>:</p>
+<p><a class="glightbox" href="https://enidev911.github.io/doc_django/assets/images/django-admin-set-cariables-css.webp" data-type="image" data-width="auto" data-height="auto" data-title="Cambio de colores con las variables CSS en el panel administrativo" data-desc-position="bottom"><img alt="Cambio de colores con las variables CSS en el panel administrativo" class="bordered-image" src="https://enidev911.github.io/doc_django/assets/images/django-admin-set-cariables-css.webp" /></a></p>
+<p>Una vez que hayas elegido el color que deseas cambiar de forma definitiva, abre el archivo CSS y sobrescribe la variable correspondiente. Por ejemplo:</p>
+<div class="highlight"><span class="filename">custom_admin.css</span><pre><span></span><code><span class="p">:</span><span class="nd">root</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">--secondary</span><span class="p">:</span><span class="w"> </span><span class="mh">#000</span><span class="w"> </span><span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h4 id="3-sobrescribir-la-plantilla-base"><strong>3. Sobrescribir la Plantilla Base</strong></h4>
+<p>Para que Django cargue el archivo CSS creado anteriormente, debes sobrescribir la plantilla base del panel administrativo. Crea un directorio llamado <code>templates/admin</code> en la raíz y coloca un archivo llamado <code>base_site.html</code>, el contenido lo podemos copiar de la plantilla base de administración de Django.</p>
+<div class="highlight"><span class="filename">templates/admin/base_site.html</span><pre><span></span><code>{% extends &quot;admin/base.html&quot; %}
+<span class="hll">{% load static %} <span class="cm">&lt;!-- (1)! --&gt;</span>
+</span>
+<span class="hll">{% block extrahead %}
+</span><span class="hll">    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;{% static &#39;css/custom_admin.css&#39; %}&quot;</span><span class="p">&gt;</span>
+</span><span class="hll">{% endblock %}
+</span>
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_(&#39;Django site admin&#39;) }}{% endblock %}
+
+{% block branding %}
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;site-name&quot;</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;{% url &#39;admin:index&#39; %}&quot;</span><span class="p">&gt;</span>{{ site_header|default:_(&#39;Django administration&#39;) }}<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+{% if user.is_anonymous %}
+  {% include &quot;admin/color_theme_toggle.html&quot; %}
+{% endif %}
+{% endblock %}
+</code></pre></div>
+<ol>
+<li>Esto es un tag de Django que se utiliza para cargar la funcionalidad que Django pueda cargar correctamente el tag <code>{% static %}</code>.</li>
+</ol>
+<p>Para que el template sea reconocido por Django, debes agregar la ubicación en el archivo <code>_site/settings.py</code> del proyecto:</p>
+<div class="highlight"><span class="filename">_site/settings.py</span><pre><span></span><code><span class="n">TEMPLATES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;BACKEND&#39;</span><span class="p">:</span> <span class="s1">&#39;django.template.backends.django.DjangoTemplates&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;DIRS&#39;</span><span class="p">:</span> <span class="p">[</span>
+<span class="hll">            <span class="n">BASE_DIR</span> <span class="o">/</span> <span class="s1">&#39;templates&#39;</span><span class="p">,</span>
+</span>        <span class="p">],</span>
+        <span class="s1">&#39;APP_DIRS&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;OPTIONS&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;context_processors&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s1">&#39;django.template.context_processors.debug&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;django.template.context_processors.request&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;django.contrib.auth.context_processors.auth&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;django.contrib.messages.context_processors.messages&#39;</span><span class="p">,</span>
+            <span class="p">],</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+</code></pre></div>
+<h2 id="usar-temas-de-tercero"><strong>Usar Temas de Tercero</strong></h2>
+<p>En lugar de escribir CSS desde cero, puedes usar un tema de tercero para darle un toque moderno y atractivo al panel de administración sin necesidad de realizar ajustes complicados.</p>
+<h3 id="que-es-django-admin-interface"><strong>¿Qué es <code>django-admin-interface</code>?</strong></h3>
+<p>El <a href="https://pypi.org/project/django-admin-interface/" target="_blank"><strong>django-admin-interface</strong></a> es un paquete para Django que proporciona un tema visualmente atractivo y moderno para el panel de administración. Con él, puedes cambiar fácilmente el estilo de los formularios, tablas, botones y muchos otros elementos del panel administrativo sin tener que personalizar todo el CSS manualmente y es personalizable por el propio administrador. Para configurar este paquete, sigue estos pasos:</p>
+<h4 id="paso-1-instalar-el-paquete-django-admin-interface"><strong>Paso 1: Instalar el paquete <code>django-admin-interface</code></strong></h4>
+<div class="highlight"><span class="filename">terminal</span><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>django-admin-interface
+</code></pre></div>
+<h4 id="paso-2-agregar-el-paquete-a-la-lista-de-aplicaciones"><strong>Paso 2: Agregar el paquete a la lista de aplicaciones</strong></h4>
+<div class="highlight"><span class="filename">_site/settings.py</span><pre><span></span><code><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+<span class="hll">    <span class="c1"># Agregar django-admin-interface</span>
+</span><span class="hll">    <span class="s1">&#39;admin_interface&#39;</span><span class="p">,</span>
+</span><span class="hll">    <span class="s1">&#39;colorfield&#39;</span><span class="p">,</span> <span class="c1"># Requerido por django-admin-interface</span>
+</span>    <span class="c1"># Otras aplicaciones de Django</span>
+    <span class="s1">&#39;django.contrib.admin&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.auth&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.contenttypes&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.sessions&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.messages&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.staticfiles&#39;</span>
+<span class="p">]</span>
+</code></pre></div>
+<h4 id="paso-3-ejecutar-migraciones"><strong>Paso 3: Ejecutar migraciones</strong></h4>
+<p>Para que todo funcione correctamente, es necesario ejecutar las migraciones del paquete <code>django-admin-interface</code>. Esto configura las tablas necesarias en la base de datos:</p>
+<div class="highlight"><span class="filename">terminal</span><pre><span></span><code>python<span class="w"> </span>manage.py<span class="w"> </span>migrate
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title"><strong>¡Importante!</strong></p>
+<p>Si has sobrescrito la plantilla <code>base_site.html</code>, el tema no se cargará automáticamente. La plantilla personalizada estaría anulando las configuraciones predeterminada de <code>django-admin-interface</code>. Para evitar temporalmente esto, renombra la plantilla, por ejemplo de <code>base_site.html</code> a <code>draft_base_site.html</code>. Si deseas sobrescribir el <code>base_site.html</code> usando este paquete, puedes usar <a href="https://github.com/bittner/django-apptemplates" target="_blank">django-apptemplates</a></p>
+</div>
+<p>Una vez que hayas instalado y configurado <code>django-admin-interface</code>, debes volver a entrar al panel de administración y verificar cambios:</p>
+<p><a class="glightbox" href="https://enidev911.github.io/doc_django/assets/images/django-admin-interface-first-view.webp" data-type="image" data-width="auto" data-height="auto" data-title="Primera vista con django-admin-interface" data-desc-position="bottom"><img alt="Primera vista con django-admin-interface" class="bordered-image" src="https://enidev911.github.io/doc_django/assets/images/django-admin-interface-first-view.webp" /></a></p>
+<h4 id="paso-4-sobrescribir-base_sitehtml-opcional"><strong>Paso 4: Sobrescribir base_site.html (Opcional)</strong></h4>
+<p>Para poder conservar los títulos que habíamos personalizado con la propiedad <code>admin.site.site_header</code>, puedes usar <a href="https://github.com/bittner/django-apptemplates" target="_blank">django-apptemplates</a> y luego en la plantilla <code>base_site.html</code> agregar <code>{% extends "admin_interface:admin/base_site.html" %}</code>:</p>
+<p><strong>1. Instala el paquete:</strong></p>
+<div class="highlight"><span class="filename">terminal</span><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>django-apptemplates
+</code></pre></div>
+<p><strong>2. En el archivo <code>_site/settings.py</code> añadimos lo siguiente:</strong></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Versiones de Django superior a 1.8</label><label for="__tabbed_3_2">Versiones de Django inferior a 1.8</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">_site/settings.py</span><pre><span></span><code><span class="n">TEMPLATES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;BACKEND&#39;</span><span class="p">:</span> <span class="s1">&#39;django.template.backends.django.DjangoTemplates&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;DIRS&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="n">BASE_DIR</span> <span class="o">/</span> <span class="s1">&#39;templates&#39;</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="c1"># &#39;APP_DIRS&#39;: True # Comenta esta línea, sino habrá conflicto.</span>
+        <span class="s1">&#39;OPTIONS&#39;</span><span class="p">:</span> <span class="p">{</span>
+<span class="hll">            <span class="s1">&#39;loaders&#39;</span><span class="p">:</span> <span class="p">[</span>
+</span><span class="hll">                <span class="s1">&#39;apptemplates.Loader&#39;</span><span class="p">,</span>
+</span><span class="hll">                <span class="s1">&#39;django.template.loaders.filesystem.Loader&#39;</span><span class="p">,</span>
+</span><span class="hll">                <span class="s1">&#39;django.template.loaders.app_directories.Loader&#39;</span><span class="p">,</span>
+</span><span class="hll">            <span class="p">],</span>
+</span>            <span class="s1">&#39;context_processors&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s1">&#39;django.template.context_processors.debug&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;django.template.context_processors.request&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;django.contrib.auth.context_processors.auth&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;django.contrib.messages.context_processors.messages&#39;</span><span class="p">,</span>
+            <span class="p">],</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">_site/settings.py</span><pre><span></span><code><span class="n">TEMPLATE_LOADERS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;apptemplates.Loader&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.template.loaders.filesystem.Loader&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.template.loaders.app_directories.Loader&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p><strong>3. En el archivo <code>base_site.html</code> agregamos lo siguiente:</strong></p>
+<div class="highlight"><span class="filename">templates/admin/base_site.html</span><pre><span></span><code><span class="hll">{% extends &quot;admin_interface:admin/base_site.html&quot; %}
+</span>{% load i18n static admin_interface_tags %}
+{% block extrahead %}
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;{% static &#39;css/custom_admin.css&#39; %}&quot;</span><span class="p">&gt;</span>
+{% endblock %}
+{% block branding %}
+{% get_admin_interface_theme as theme %}
+<span class="p">&lt;</span><span class="nt">h1</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;site-name&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;{% url &#39;admin:index&#39; %}&quot;</span><span class="p">&gt;</span>
+        {% if theme.logo_visible %}
+            {% if theme.logo %}
+            <span class="p">&lt;</span><span class="nt">img</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;logo&quot;</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;display:none;&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;{{ theme.logo.url }}&quot;</span> <span class="err">{%</span> <span class="na">if</span> <span class="na">theme</span><span class="err">.</span><span class="na">logo</span><span class="err">.</span><span class="na">width</span> <span class="err">%}</span><span class="na">width</span><span class="o">=</span><span class="s">&quot;{{ theme.logo.width }}&quot;</span><span class="err">{%</span> <span class="na">endif</span> <span class="err">%}</span> <span class="err">{%</span> <span class="na">if</span> <span class="na">theme</span><span class="err">.</span><span class="na">logo</span><span class="err">.</span><span class="na">height</span> <span class="err">%}</span><span class="na">height</span><span class="o">=</span><span class="s">&quot;{{ theme.logo.height }}&quot;</span><span class="err">{%</span> <span class="na">endif</span> <span class="err">%}</span><span class="p">&gt;</span>
+            {% else %}
+            <span class="p">&lt;</span><span class="nt">img</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;logo default&quot;</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;display:none;&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;milogo.webp&quot;</span> <span class="na">width</span><span class="o">=</span><span class="s">&quot;104&quot;</span> <span class="na">height</span><span class="o">=</span><span class="s">&quot;36&quot;</span><span class="p">&gt;</span>
+            {% endif %}
+        {% endif %}
+        {% if theme.title_visible %}
+        <span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>{% if &#39;Django&#39; in theme.title %}{{ site_header|default:_(&#39;Django administration&#39;) }}{% else %}{% trans theme.title %}{% endif %}<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+        {% endif %}
+    <span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+{% endblock %}
+</code></pre></div>
+<h2 id="formularios-personalizados"><strong>Formularios Personalizados</strong></h2>
+<p>Puedes crear formularios personalizados para tus modelos</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+        
+      
+      <nav class="md-footer__inner md-grid" aria-label="Pie" >
+        
+          
+          <a href="../shell-de-django-orm-y-querysets/" class="md-footer__link md-footer__link--prev" aria-label="Anterior: Shell de Django, ORM y QuerySets">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Anterior
+              </span>
+              <div class="md-ellipsis">
+                Shell de Django, ORM y QuerySets
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 @mcherrera
+    </div>
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/enidev911" target="_blank" rel="noopener" title="enidev911" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="mailto:contacto@mcherrera.dev" target="_blank" rel="noopener" title="contacto" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 4H7a5 5 0 0 0-5 5v11h18a2 2 0 0 0 2-2V9a5 5 0 0 0-5-5m-7 14H4V9a3 3 0 0 1 3-3 3 3 0 0 1 3 3zm9-3h-2v-2h-4v-2h6zM9 11H5V9h4z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.prune", "navigation.top", "navigation.tracking", "toc.follow", "navigation.sections", "navigation.expand", "navigation.footer", "content.code.copy", "content.code.select", "content.code.annotate", "content.tooltips", "content.action.edit", "content.action.view"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f1b6f286.min.js"></script>
+      
+        <script src="../../scripts/hello_word.js"></script>
+      
+    
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "fade", "closeEffect": "fade", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
+</html>
