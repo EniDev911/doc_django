@@ -196,6 +196,14 @@ El panel administrativo de Django utiliza **variables CSS** personalizables para
 
 ![Cambio de colores con las variables CSS en el panel administrativo]({{ get_image_url('assets/images/django-admin-set-cariables-css.webp') }}){: .bordered-image }
 
+Una vez que hayas elegido el color que deseas cambiar de forma definitiva, abre el archivo CSS y sobrescribe la variable correspondiente. Por ejemplo:
+
+```css title="custom_admin.css"
+:root {
+    --secondary: #000 !important;
+}
+```
+
 #### **3. Sobrescribir la Plantilla Base**
 
 Para que Django cargue el archivo CSS creado anteriormente, debes sobrescribir la plantilla base del panel administrativo. Crea un directorio llamado `templates/admin` en la raíz y coloca un archivo llamado `base_site.html`, el contenido lo podemos copiar de la plantilla base de administración de Django.
@@ -245,10 +253,130 @@ TEMPLATES = [
 ]
 ```
 
-
 ## **Usar Temas de Tercero**
 
+En lugar de escribir CSS desde cero, puedes usar un tema de tercero para darle un toque moderno y atractivo al panel de administración sin necesidad de realizar ajustes complicados.
 
+### **¿Qué es `django-admin-interface`?**
+
+El [**django-admin-interface**](https://pypi.org/project/django-admin-interface/){:target='_blank'} es un paquete para Django que proporciona un tema visualmente atractivo y moderno para el panel de administración. Con él, puedes cambiar fácilmente el estilo de los formularios, tablas, botones y muchos otros elementos del panel administrativo sin tener que personalizar todo el CSS manualmente y es personalizable por el propio administrador. Para configurar este paquete, sigue estos pasos:
+
+#### **Paso 1: Instalar el paquete `django-admin-interface`**
+
+```bash title="terminal"
+pip install django-admin-interface
+```
+
+#### **Paso 2: Agregar el paquete a la lista de aplicaciones**
+
+```python title="_site/settings.py" hl_lines="2-4"
+INSTALLED_APPS = [
+    # Agregar django-admin-interface
+    'admin_interface',
+    'colorfield', # Requerido por django-admin-interface
+    # Otras aplicaciones de Django
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles'
+]
+```
+
+#### **Paso 3: Ejecutar migraciones**
+
+Para que todo funcione correctamente, es necesario ejecutar las migraciones del paquete `django-admin-interface`. Esto configura las tablas necesarias en la base de datos:
+
+```bash title="terminal"
+python manage.py migrate
+```
+
+!!! info "**¡Importante!**"
+    Si has sobrescrito la plantilla `base_site.html`, el tema no se cargará automáticamente. La plantilla personalizada estaría anulando las configuraciones predeterminada de `django-admin-interface`. Para evitar temporalmente esto, renombra la plantilla, por ejemplo de `base_site.html` a `draft_base_site.html`. Si deseas sobrescribir el `base_site.html` usando este paquete, puedes usar [django-apptemplates](https://github.com/bittner/django-apptemplates){:target='_blank'}
+
+
+Una vez que hayas instalado y configurado `django-admin-interface`, debes volver a entrar al panel de administración y verificar cambios:
+
+![Primera vista con django-admin-interface]({{ get_image_url('assets/images/django-admin-interface-first-view.webp') }}){: .bordered-image }
+
+#### **Paso 4: Sobrescribir base_site.html (Opcional)**
+
+Para poder conservar los títulos que habíamos personalizado con la propiedad `admin.site.site_header`, puedes usar [django-apptemplates](https://github.com/bittner/django-apptemplates){:target='_blank'} y luego en la plantilla `base_site.html` agregar {% raw %}`{% extends "admin_interface:admin/base_site.html" %}`{% endraw %}:
+
+**1. Instala el paquete:**
+
+```bash title="terminal"
+pip install django-apptemplates
+```
+
+**2. En el archivo `_site/settings.py` añadimos lo siguiente:**
+
+=== "Versiones de Django superior a 1.8"
+
+	```python title="_site/settings.py" hl_lines="9-13"
+    TEMPLATES = [
+        {
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'DIRS': [
+                BASE_DIR / 'templates',
+            ],
+            # 'APP_DIRS': True # Comenta esta línea, sino habrá conflicto.
+            'OPTIONS': {
+                'loaders': [
+                    'apptemplates.Loader',
+                    'django.template.loaders.filesystem.Loader',
+                    'django.template.loaders.app_directories.Loader',
+                ],
+                'context_processors': [
+                    'django.template.context_processors.debug',
+                    'django.template.context_processors.request',
+                    'django.contrib.auth.context_processors.auth',
+                    'django.contrib.messages.context_processors.messages',
+                ],
+            },
+        },
+    ]
+	```
+
+=== "Versiones de Django inferior a 1.8"
+
+	```python title="_site/settings.py"
+    TEMPLATE_LOADERS = (
+        'apptemplates.Loader',
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
+    )
+	```
+
+**3. En el archivo `base_site.html` agregamos lo siguiente:**
+
+{% raw %}
+```html title="templates/admin/base_site.html" hl_lines="1"
+{% extends "admin_interface:admin/base_site.html" %}
+{% load i18n static admin_interface_tags %}
+{% block extrahead %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/custom_admin.css' %}">
+{% endblock %}
+{% block branding %}
+{% get_admin_interface_theme as theme %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        {% if theme.logo_visible %}
+            {% if theme.logo %}
+            <img class="logo" style="display:none;" src="{{ theme.logo.url }}" {% if theme.logo.width %}width="{{ theme.logo.width }}"{% endif %} {% if theme.logo.height %}height="{{ theme.logo.height }}"{% endif %}>
+            {% else %}
+            <img class="logo default" style="display:none;" src="milogo.webp" width="104" height="36">
+            {% endif %}
+        {% endif %}
+        {% if theme.title_visible %}
+        <span>{% if 'Django' in theme.title %}{{ site_header|default:_('Django administration') }}{% else %}{% trans theme.title %}{% endif %}</span>
+        {% endif %}
+    </a>
+</h1>
+{% endblock %}
+```
+{% endraw %}
 
 ## **Formularios Personalizados**
 
